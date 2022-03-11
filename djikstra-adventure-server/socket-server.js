@@ -16,6 +16,46 @@ app.get("/home", cors(), async (req, res) => {
   res.send("This is the data for the home page from Express");
 });
 
+// app.post("/answer", cors(), async (req, res) =>{
+
+// });
+
+app.get("/api/v1/quiz", (req, res) => {
+  console.log("GET REQUEST RECIEVED");
+  res.json({
+    questionData: [
+      {
+        question: "What Data Structure has O(1) Access",
+        correctAnswer: "Hashmap",
+        answer1: "Hashmap",
+        answer2: "Array",
+        answer3: "LinkedList",
+        answer4: "Stack",
+        index: 0,
+      },
+      {
+        question: "What has an O(log(n)) worst case space complexity",
+        correctAnswer: "Quicksort",
+        answer1: "Mergesort",
+        answer2: "Quicksort",
+        answer3: "Heapsort",
+        answer4: "Radix Sort",
+        index: 1,
+      },
+
+      {
+        question: "What is the insertion time of a AVL Tree",
+        correctAnswer: "O(log(n))",
+        answer1: "O(1)",
+        answer2: "O(n)",
+        answer3: "O(log(n))",
+        answer4: "O(n^2)",
+        index: 2,
+      },
+    ],
+  });
+});
+
 // Socket.io is requried for quizing service
 const { Server } = require("socket.io");
 const http = require("http");
