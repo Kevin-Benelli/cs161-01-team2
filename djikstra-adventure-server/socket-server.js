@@ -62,6 +62,7 @@ const http = require("http");
 
 // Instantiate socket server
 const server = http.createServer(app);
+const totalUserConnectionLimit = 4;
 
 const io = new Server(server, {
   cors: {
@@ -74,11 +75,22 @@ const io = new Server(server, {
 
 // Listen for socket event to be recieved: listens for event with name "connection"
 io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`); // should console.log the id of the user
-
   // listens and passes quiz room id to socket // this is passed through at the client level
   socket.on("join_quiz_room", (data) => {
-    socket.join(data);
+    // if room has not met max user limit (4) then allow users to connect
+    if (io.engine.clientsCount <= totalUserConnectionLimit) {
+      console.log(`User Connected: ${socket.id}`); // should console.log the id of the user
+      socket.join(data);
+    }
+    // If room has reached max user limit then don't allow connection and throw error
+    else {
+      socket.emit("error", {
+        message: "Reached the maximum number of users for this room",
+      });
+      socket.disconnect();
+      console.log(`User ${socket.id} Disconnected Due to Max Limit`);
+    }
+
     console.log(`User ID: ${socket.id} joined the quiz room: ${data}`);
   });
 
