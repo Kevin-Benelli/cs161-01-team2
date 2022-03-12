@@ -1,11 +1,12 @@
 const express = require("express");
-const path = require("path");
 const app = express();
+const cors = require("cors");
+const port = 5000; // localhost 5000
 
-const PORT_NUM = process.env.PORT || 5000;
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cors());
 
-app.get("/", (req, res) => {
-  res.send("<h1>Hello World</h1>");
+app.listen(port, () => {
+  console.log(`Listening at http://localhost:${port}`);
 });
-
-app.listen(PORT_NUM, () => console.log(`Server running on ${PORT_NUM}`));
