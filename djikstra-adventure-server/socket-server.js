@@ -86,7 +86,7 @@ io.on("connection", (socket) => {
   socket.on("send_message", (data) => {
     // Emits messages you send to all other uses in the quizRoom
     socket.to(data.quizroom).emit("receive_message", data);
-    console.log(data);
+    console.log("send_message:", data);
   });
 
   // disconnect from the server at the end
