@@ -1,5 +1,5 @@
 import "./App.css";
-import SocketClient from "./components/socketclient";
+import SocketClient from "./components/SocketClient";
 
 function App() {
   return (

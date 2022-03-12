@@ -2,6 +2,8 @@ import React from "react";
 import { io } from "socket.io-client";
 import { useState } from "react";
 import Quiz from "./Quiz/Quiz";
+import cat_gif from "../images/cs_cat.gif";
+import styles from "./SocketClient.module.css";
 
 const ENDPOINT = "http://localhost:5001";
 const socket = io(ENDPOINT);
@@ -29,18 +31,22 @@ const SocketClient = () => {
         <div className="joinQuizRoom">
           <h1> Join Quiz Room Now! </h1>
           <hr />
+
+          <img src={cat_gif} alt="cat gif" className={styles.image} />
+
           <input
-            className="joinQuizInputField"
+            // className={"joinQuizInputField"}
+            className={styles.input}
             type="text"
             placeholder="Enter Name"
             onChange={(event) => {
               setUsername(event.target.value.toUpperCase());
-
               console.log(event.target.value.toUpperCase());
             }}
           />
           <input
-            className="joinQuizInputField"
+            // className="joinQuizInputField"
+            className={styles.input}
             type="text"
             placeholder="Enter Quiz Room Key"
             onChange={(event) => {
@@ -53,8 +59,8 @@ const SocketClient = () => {
             }}
           />
 
-          <button className="joinQuizRoomButton" onClick={joinRoom}>
-            Join Quiz Room{" "}
+          <button className={styles.joinQuizRoomButton} onClick={joinRoom}>
+            Join Room
           </button>
         </div>
       ) : (

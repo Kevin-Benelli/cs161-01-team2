@@ -3,8 +3,8 @@ import styles from "./Question.module.css";
 
 const Questions = ({ onHandleUserAnswer, index, question }) => {
   return (
-    <React.Fragment key={index}>
-      <h2> {question.question}</h2>
+    <div key={index} className={styles.page}>
+      <h2 className={styles.header}> {question.question}</h2>
       <div className={styles.center_buttons}>
         <button
           key={question.answer1}
@@ -43,7 +43,7 @@ const Questions = ({ onHandleUserAnswer, index, question }) => {
           {question.answer4}
         </button>
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 

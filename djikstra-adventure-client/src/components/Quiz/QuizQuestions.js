@@ -69,10 +69,10 @@ const QuizQuestions = ({ socket, username, quizroom }) => {
     <div>
       <div className="quiz-room-window">
         <div className="quiz-room-header-title">
-          <h1> Live Quiz Room for {quizroom} </h1>
+          <h1 className={styles.header}> Live Quiz Room for {quizroom} </h1>
           <hr />
         </div>
-        <div className="quiz-room-footer">
+        <div className={styles.answers}>
           {questions.map((question, index) => {
             // setCurrentQuestion(question)
             return (
