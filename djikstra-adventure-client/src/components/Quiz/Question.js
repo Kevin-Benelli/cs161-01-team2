@@ -1,13 +1,20 @@
 import React from "react";
 import styles from "./Question.module.css";
 
-const Questions = ({ onHandleUserAnswer, index, question }) => {
+const Questions = ({ index, question, onHandleUserAnswer }) => {
+  //   const onAnswerChangeHandler = (e) => {
+  //     console.log(e);
+  //     // console.log(e.target.value);
+  //     // onHandleUserAnswer(e.target.value);
+  //   };
+
   return (
     <div key={index} className={styles.page}>
-      <h2 className={styles.header}> {question.question}</h2>
+      <h2 className={styles.header}>
+        {`Question ${index + 1}: ${question.question}`}
+      </h2>
       <div className={styles.center_buttons}>
         <button
-          key={question.answer1}
           className={`${styles.answers}  ${styles.focus}`}
           onClick={() =>
             onHandleUserAnswer(question.answer1, question.correctAnswer)

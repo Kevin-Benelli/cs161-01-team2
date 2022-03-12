@@ -20,7 +20,7 @@ app.get("/home", cors(), async (req, res) => {
 
 // });
 
-app.get("/api/v1/quiz", (req, res) => {
+app.get("/api/v1/quiz", cors(), async (req, res) => {
   console.log("GET REQUEST RECIEVED");
   res.json({
     questionData: [
