@@ -1,0 +1,43 @@
+input[type="text"]:focus {
+  border: 3px solid #555;
+}
+
+.image {
+  margin: 8vh;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 45vh;
+}
+.input {
+  padding: 10px;
+  font-size: 18px;
+  margin: 10px;
+  border: 3px solid #555;
+}
+
+.join_room {
+  background-color: #1b32b6; /* Green */
+  color: white;
+  text-align: center;
+  display: inline-block;
+  font-size: 24px;
+  padding: 5vh;
+  margin: 2vh;
+  border: 1px solid #ffff;
+  display: block;
+  width: 100vw;
+}
+
+.joinQuizRoomButton {
+  height: 5vh;
+  margin: 5px;
+  width: 15vw;
+  border-radius: 10px;
+  padding: 5px;
+  font-size: 16px;
+  background: rgb(4, 40, 201);
+  color: #fff;
+  cursor: pointer;
+  border: none;
+}

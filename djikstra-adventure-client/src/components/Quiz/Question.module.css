@@ -5,12 +5,26 @@
 .answers {
   background-color: #1b32b6; /* Green */
   color: white;
-  text-align: center;
-  display: inline-block;
   font-size: 24px;
   padding: 5vh;
   margin: 2vh;
   border: 1px solid #ffff;
-  display: block;
-  width: 100vw;
+  display: flex;
+  display: grid;
+  width: 80vw;
+  margin-left: 4vw;
+  border-radius: 10vh;
+}
+
+.page {
+  display: flex;
+  display: grid;
+}
+
+.header {
+  padding: 60px;
+  text-align: center;
+  background: #1abc9c;
+  color: white;
+  font-size: 30px;
 }

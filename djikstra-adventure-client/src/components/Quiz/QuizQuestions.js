@@ -3,27 +3,12 @@ import { useState, useEffect } from "react";
 import styles from "./QuizQuestions.module.css";
 import Question from "./Question";
 
-const QuizQuestions = ({ socket, username, quizroom }) => {
-  // const [selectedAnswer, setSelectedAnswer] = useState("");
+const QuizQuestions = ({ socket, username, quizroom, questions }) => {
+  const [selectedAnswer, setSelectedAnswer] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
-  const [questions, setQuestions] = useState([]);
-  // const [currentQuestion, setCurrentQuestion] = useState(null);
-  // const [userScore, setUserScore] = useState(0);
-
-  useEffect(() => {
-    fetch("http://localhost:5001/api/v1/quiz")
-      .then((data) => {
-        return data.json();
-      })
-      .then((questions) => {
-        console.log("API Question Data: ", questions.questionData);
-        setQuestions(() => questions["questionData"]);
-      })
-      .catch((error) => {
-        console.log("Error: ", error);
-        throw error;
-      });
-  }, []);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [userScore, setUserScore] = useState(0);
+  const [displayScore, setDisplayScore] = useState(false);
 
   // Listens to whenever there is a change in socket server
   useEffect(() => {
@@ -31,7 +16,7 @@ const QuizQuestions = ({ socket, username, quizroom }) => {
     // grab data from backend (data)
     socket.on("receive_message", (data) => {
       console.log("here:", data);
-      //   setSelectedAnswer(data);
+      setSelectedAnswer(data);
     });
   }, [socket]);
 
@@ -40,6 +25,21 @@ const QuizQuestions = ({ socket, username, quizroom }) => {
     console.log("Correct Answer: ", correctAnswer);
 
     setIsCorrect(userAnswer === correctAnswer);
+
+    if (userAnswer === correctAnswer) {
+      setUserScore(userScore + 1);
+    }
+
+    const nextQuestion = currentQuestion + 1;
+    console.log("nexxxxt: ", nextQuestion, questions.length);
+    // If the index is less than the total questions continue displaying
+    if (nextQuestion < questions.length) {
+      setCurrentQuestion(nextQuestion);
+    } else {
+      setDisplayScore(true);
+    }
+    // setSelectedAnswer(selectedAnswer);
+
     console.log("Correct Answer? - ", userAnswer === correctAnswer);
     console.log("");
     // messageData provides more details about answer submission
@@ -69,25 +69,24 @@ const QuizQuestions = ({ socket, username, quizroom }) => {
     <div>
       <div className="quiz-room-window">
         <div className="quiz-room-header-title">
-          <h1> Live Quiz Room for {quizroom} </h1>
+          <h1 className={styles.header}> Live Quiz Room for {quizroom} </h1>
           <hr />
         </div>
-        <div className="quiz-room-footer">
-          {questions.map((question, index) => {
-            // setCurrentQuestion(question)
-            return (
-              <Question
-                key={index}
-                question={question}
-                index={index}
-                socket={socket}
-                username={username}
-                quizroom={quizroom}
-                onHandleUserAnswer={handleUserAnswer}
-              />
-            );
-          })}
-        </div>
+
+        {console.log("yioooo: ", questions)}
+        {displayScore ? (
+          <div className="score-section">
+            Scored: {userScore} / {questions.length}
+          </div>
+        ) : (
+          <div className={styles.answers}>
+            <Question
+              index={currentQuestion}
+              question={questions[currentQuestion]}
+              onHandleUserAnswer={handleUserAnswer}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
