@@ -53,7 +53,7 @@ const SocketClient = () => {
       {/* If quiz box is not displayed show enter quiz room; else show quiz box */}
       {!showQuizBox && !isLoading ? (
         <div className="joinQuizRoom">
-          <h1> Join Quiz Room Now! </h1>
+          <h1>Join Quiz Room Now!</h1>
           <hr />
 
           <img src={cat_gif} alt="cat gif" className={styles.image} />

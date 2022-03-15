@@ -114,3 +114,15 @@ io.on("connection", (socket) => {
 server.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
 });
+
+//################################# DATABASE SECTION #######################################
+
+//Creating a database and connection
+const mysql = require("mysql");
+const e = require("express");
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "rootuser",
+  database: "databaseName",
+});

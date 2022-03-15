@@ -2,12 +2,6 @@ import React from "react";
 import styles from "./Question.module.css";
 
 const Questions = ({ index, question, onHandleUserAnswer }) => {
-  //   const onAnswerChangeHandler = (e) => {
-  //     console.log(e);
-  //     // console.log(e.target.value);
-  //     // onHandleUserAnswer(e.target.value);
-  //   };
-
   return (
     <div key={index} className={styles.page}>
       <h2 className={styles.header}>
