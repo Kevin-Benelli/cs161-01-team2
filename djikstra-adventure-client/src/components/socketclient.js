@@ -43,7 +43,7 @@ const SocketClient = () => {
 
     // GET HASHSET AND CHECK IF Quiz Room Key EXISTS IN Quiz Room Key SET; ELSE ERROR MESSAGE
     if (userName !== "" && quizRoom !== "") {
-      socket.emit("join_quiz_room", quizRoom);
+      socket.emit("join_quiz_room", quizRoom); // Add time here
       setShowQuizBox(true);
     }
   };
