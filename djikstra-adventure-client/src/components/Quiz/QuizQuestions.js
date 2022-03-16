@@ -4,7 +4,7 @@ import styles from "./QuizQuestions.module.css";
 import Question from "./Question";
 
 const QuizQuestions = ({ socket, username, quizroom, questions }) => {
-  const [selectedAnswer, setSelectedAnswer] = useState("");
+  // const [selectedAnswer, setSelectedAnswer] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userScore, setUserScore] = useState(0);
@@ -16,11 +16,12 @@ const QuizQuestions = ({ socket, username, quizroom, questions }) => {
     // grab data from backend (data)
     socket.on("receive_message", (data) => {
       console.log("here:", data);
-      setSelectedAnswer(data);
+      // setSelectedAnswer(data);
     });
   }, [socket]);
 
   const handleUserAnswer = async (userAnswer, correctAnswer) => {
+    console.log("Question passed in:", questions[currentQuestion].question);
     console.log("Answer passed in:", userAnswer);
     console.log("Correct Answer: ", correctAnswer);
 
@@ -31,7 +32,7 @@ const QuizQuestions = ({ socket, username, quizroom, questions }) => {
     }
 
     const nextQuestion = currentQuestion + 1;
-    console.log("nexxxxt: ", nextQuestion, questions.length);
+    // console.log("nexxxxt: ", nextQuestion, questions.length);
     // If the index is less than the total questions continue displaying
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
@@ -46,8 +47,11 @@ const QuizQuestions = ({ socket, username, quizroom, questions }) => {
     const messageData = {
       quizroom: quizroom, // stores specific quizroom
       user: username, // maps message to user name
-      selectedAnswer: userAnswer === correctAnswer, // sets messsage to message drafted
-      iscorrect: isCorrect,
+      // selectedAnswer: userAnswer === correctAnswer, // sets messsage to message drafted
+      question: questions[currentQuestion].question,
+      answer: questions[currentQuestion].correctAnswer,
+      useranswer: userAnswer,
+      usercorrect: isCorrect,
       // gets time stamp by hours and minutes
       time:
         new Date(Date.now()).getHours() +
