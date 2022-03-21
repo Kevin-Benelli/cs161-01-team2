@@ -69,7 +69,7 @@ const io = new Server(server, {
     // identify what server is calling our socket.io server (setting to reactJS local dev server)
     // origin: "http://localhost:3000", // grats permission to accept socket communication with this url
     origin: "*", // grats permission to accept socket communication with this url
-    mathods: ["GET", "POST"],
+    methods: ["GET", "POST"],
   },
 });
 
@@ -124,107 +124,101 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "Website"
+  database: "Website",
 });
-
 
 app.post("/createAccount", async (req, res) => {
-    let {
-        username,
-        password
-    } = req.body;
+  let { username, password } = req.body;
 
-    console.log("/createAccount");
+  console.log("/createAccount");
 
-    console.log("Express received: ", req.body);
+  console.log("Express received: ", req.body);
 
-    // Add username and password to the database
-    db.query("INSERT INTO User (username, password) VALUES (?,?)", [username, password], (err, result) => {
-        if (err) {
-            console.log(err)
-            res.send({
-                message: "Account creation failed",
-                error: true
-            });
-        } else {
-            res.send({
-                message: "New account created",
-                error: false
-            });
-        }
-    });
-})
-
+  // Add username and password to the database
+  db.query(
+    "INSERT INTO User (username, password) VALUES (?,?)",
+    [username, password],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.send({
+          message: "Account creation failed",
+          error: true,
+        });
+      } else {
+        res.send({
+          message: "New account created",
+          error: false,
+        });
+      }
+    }
+  );
+});
 
 app.post("/login", async (req, res) => {
-    let {
-        username,
-        password
-    } = req.body
+  let { username, password } = req.body;
 
-    console.log("/login");
-    console.log("Express received: ", req.body)
+  console.log("/login");
+  console.log("Express received: ", req.body);
 
-    db.query("SELECT username, password FROM User WHERE username = ?", [username], (err, result) => {
-        if (result.length != 1) {
-            console.log(err)
-            res.send({
-                message: "Incorrect username/password",
-                error: true
-            });
-        } else {
-            console.log(err)
-            res.send({
-                message: 'Login Successful',
-                error: true
-            });
-        }
-    });
-})
+  db.query(
+    "SELECT username, password FROM User WHERE username = ?",
+    [username],
+    (err, result) => {
+      if (result.length != 1) {
+        console.log(err);
+        res.send({
+          message: "Incorrect username/password",
+          error: true,
+        });
+      } else {
+        console.log(err);
+        res.send({
+          message: "Login Successful",
+          error: true,
+        });
+      }
+    }
+  );
+});
 
 app.post("/AccountStats", async (req, res) => {
-    let {
-        FK_UserID,
-        Login,
-        day
-    } = req.body;
+  let { FK_UserID, Login, day } = req.body;
 
-    console.log("/AccountStats");
+  console.log("/AccountStats");
 
-    console.log("Express received: ", req.body);
+  console.log("Express received: ", req.body);
 
-    
-    db.query("INSERT INTO UserLogin (FK_UserID, Login, day) VALUES (?,?,?)", [FK_UserID, Login, day], (err, result) => {
-        if (err) {
-            console.log(err)
-            res.send({
-                message: "User login data failed to save",
-                error: true
-            });
-        } else {
-            res.send({
-                message: "User login data saved",
-                error: false
-            });
-        }
-    });
-})
-
-
-db.connect(function(err) {
-  db.query("SELECT * FROM UserLogin", function (err, result, fields) {
-    if (err) throw err;
-    console.log(result);
-   });
+  db.query(
+    "INSERT INTO UserLogin (FK_UserID, Login, day) VALUES (?,?,?)",
+    [FK_UserID, Login, day],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.send({
+          message: "User login data failed to save",
+          error: true,
+        });
+      } else {
+        res.send({
+          message: "User login data saved",
+          error: false,
+        });
+      }
+    }
+  );
 });
 
-db.connect(function(err) {
-  db.query("SELECT * FROM User", function (err, result, fields) {
-    if (err) throw err;
-    console.log(result);
-   });
-});
+// db.connect(function (err) {
+//   db.query("SELECT * FROM UserLogin", function (err, result, fields) {
+//     if (err) throw err;
+//     console.log(result);
+//   });
+// });
 
-
-
-
+// db.connect(function (err) {
+//   db.query("SELECT * FROM User", function (err, result, fields) {
+//     if (err) throw err;
+//     console.log(result);
+//   });
+// });
