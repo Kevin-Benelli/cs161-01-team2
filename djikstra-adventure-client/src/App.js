@@ -1,10 +1,10 @@
 import "./App.css";
-import SocketClient from "./components/SocketClient";
+import Login from "./components/login";
 
 function App() {
   return (
     <div className="App">
-      <SocketClient />
+      <Login />
     </div>
   );
 }
