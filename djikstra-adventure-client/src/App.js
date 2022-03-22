@@ -1,11 +1,18 @@
 import "./App.css";
-import Login from "./components/login";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import LoginPage from "./components/Login/LoginPage";
+import SocketClient from "./components/SocketClient";
 
 function App() {
   return (
-    <div className="App">
-      <Login />
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/home" element={<SocketClient />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
