@@ -2,6 +2,10 @@ input[type="text"]:focus {
   border: 3px solid #555;
 }
 
+.center {
+  text-align: center;
+}
+
 .image {
   margin: 8vh;
   display: block;

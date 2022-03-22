@@ -49,7 +49,7 @@ const SocketClient = () => {
   };
 
   return (
-    <div className="center">
+    <div className={styles.center}>
       {/* If quiz box is not displayed show enter quiz room; else show quiz box */}
       {!showQuizBox && !isLoading ? (
         <div className="joinQuizRoom">
