@@ -33,7 +33,7 @@ input[type="text"]:focus {
   width: 100vw;
 }
 
-.joinQuizRoomButton {
+.button {
   height: 5vh;
   margin: 5px;
   width: 15vw;

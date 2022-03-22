@@ -8,7 +8,7 @@ import styles from "./SocketClient.module.css";
 const ENDPOINT = "http://localhost:5001";
 const socket = io(ENDPOINT);
 
-const SocketClient = () => {
+const SocketClient = ({ onLogoutHandler }) => {
   const [userName, setUsername] = useState("");
   const [quizRoom, setQuizRoom] = useState("");
   const [showQuizBox, setShowQuizBox] = useState(false);
@@ -83,8 +83,11 @@ const SocketClient = () => {
             }}
           />
 
-          <button className={styles.joinQuizRoomButton} onClick={joinRoom}>
+          <button className={styles.button} onClick={joinRoom}>
             Join Room
+          </button>
+          <button className={styles.button} onClick={onLogoutHandler}>
+            Logout
           </button>
         </div>
       ) : (
