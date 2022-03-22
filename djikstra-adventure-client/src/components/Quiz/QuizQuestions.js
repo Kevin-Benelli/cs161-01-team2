@@ -12,33 +12,31 @@ const QuizQuestions = ({ socket, username, quizroom, questions }) => {
   const timeLimit = 20;
 
   const questionsInterval = useRef();
-  const [questionData, setQuestionData] = useState(questions)
-  const [time, setTimer ] = useState(timeLimit);
+  const [questionData, setQuestionData] = useState(questions);
+  const [time, setTimer] = useState(timeLimit);
   const timerInterval = useRef();
-  useEffect(()=> {
 
+  useEffect(() => {
     timerInterval.current = setInterval(() => {
-      setTimer(prevTime => prevTime - 1);
+      setTimer((prevTime) => prevTime - 1);
     }, 1000);
 
     questionsInterval.current = setInterval(() => {
-      setCurrentQuestion(prevQuestion => prevQuestion + 1);
-    }, timeLimit*1000);
-
-  },[questionData])
-
-  useEffect(()=>{
-    if(time == 0) setTimer(timeLimit);
-  },[time])
+      setCurrentQuestion((prevQuestion) => prevQuestion + 1);
+    }, timeLimit * 1000);
+  }, [questionData]);
 
   useEffect(() => {
-    if (currentQuestion == questionData.length && currentQuestion!=0)  {
+    if (time === 0) setTimer(timeLimit);
+  }, [time]);
+
+  useEffect(() => {
+    if (currentQuestion === questionData.length && currentQuestion !== 0) {
       clearInterval(questionsInterval.current);
-      clearInterval(timerInterval.current)
+      clearInterval(timerInterval.current);
       setDisplayScore(true);
     }
   }, [currentQuestion]);
-
 
   // Listens to whenever there is a change in socket server
   useEffect(() => {
@@ -106,13 +104,13 @@ const QuizQuestions = ({ socket, username, quizroom, questions }) => {
           <h1 className={styles.header}> Live Quiz Room for {quizroom} </h1>
           <hr />
         </div>
-        <div>{displayScore? null: time}</div>
+        <div className={styles.timer}>{displayScore ? null : time}</div>
 
         {displayScore ? (
-          <div className="score-section">
-            Scored: {userScore} / {questionData.length}
-          </div>
-        ) : currentQuestion == questionData.length? null:  (
+          <span className={styles.score}>
+            {username} Scored: {userScore} / {questionData.length}
+          </span>
+        ) : currentQuestion === questionData.length ? null : (
           <div className={styles.answers}>
             <Question
               index={currentQuestion}
