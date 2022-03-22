@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./Question.module.css";
 
 const Questions = ({ index, question, onHandleUserAnswer }) => {
+
   return (
     <div key={index} className={styles.page}>
       <h2 className={styles.header}>

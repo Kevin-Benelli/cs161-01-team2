@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./QuizQuestions.module.css";
 import Question from "./Question";
 
@@ -9,6 +9,36 @@ const QuizQuestions = ({ socket, username, quizroom, questions }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userScore, setUserScore] = useState(0);
   const [displayScore, setDisplayScore] = useState(false);
+  const timeLimit = 20;
+
+  const questionsInterval = useRef();
+  const [questionData, setQuestionData] = useState(questions)
+  const [time, setTimer ] = useState(timeLimit);
+  const timerInterval = useRef();
+  useEffect(()=> {
+
+    timerInterval.current = setInterval(() => {
+      setTimer(prevTime => prevTime - 1);
+    }, 1000);
+
+    questionsInterval.current = setInterval(() => {
+      setCurrentQuestion(prevQuestion => prevQuestion + 1);
+    }, timeLimit*1000);
+
+  },[questionData])
+
+  useEffect(()=>{
+    if(time == 0) setTimer(timeLimit);
+  },[time])
+
+  useEffect(() => {
+    if (currentQuestion == questionData.length && currentQuestion!=0)  {
+      clearInterval(questionsInterval.current);
+      clearInterval(timerInterval.current)
+      setDisplayScore(true);
+    }
+  }, [currentQuestion]);
+
 
   // Listens to whenever there is a change in socket server
   useEffect(() => {
@@ -21,7 +51,7 @@ const QuizQuestions = ({ socket, username, quizroom, questions }) => {
   }, [socket]);
 
   const handleUserAnswer = async (userAnswer, correctAnswer) => {
-    console.log("Question passed in:", questions[currentQuestion].question);
+    console.log("Question passed in:", questionData[currentQuestion].question);
     console.log("Answer passed in:", userAnswer);
     console.log("Correct Answer: ", correctAnswer);
 
@@ -31,14 +61,14 @@ const QuizQuestions = ({ socket, username, quizroom, questions }) => {
       setUserScore(userScore + 1);
     }
 
-    const nextQuestion = currentQuestion + 1;
-    // console.log("nexxxxt: ", nextQuestion, questions.length);
-    // If the index is less than the total questions continue displaying
-    if (nextQuestion < questions.length) {
-      setCurrentQuestion(nextQuestion);
-    } else {
-      setDisplayScore(true);
-    }
+    // const nextQuestion = currentQuestion + 1;
+    // // console.log("nexxxxt: ", nextQuestion, questions.length);
+    // // If the index is less than the total questions continue displaying
+    // if (nextQuestion < questions.length) {
+    //   setCurrentQuestion(nextQuestion);
+    // } else {
+    //   setDisplayScore(true);
+    // }
     // setSelectedAnswer(selectedAnswer);
 
     console.log("Correct Answer? - ", userAnswer === correctAnswer);
@@ -48,8 +78,8 @@ const QuizQuestions = ({ socket, username, quizroom, questions }) => {
       quizroom: quizroom, // stores specific quizroom
       user: username, // maps message to user name
       // selectedAnswer: userAnswer === correctAnswer, // sets messsage to message drafted
-      question: questions[currentQuestion].question,
-      answer: questions[currentQuestion].correctAnswer,
+      question: questionData[currentQuestion].question,
+      answer: questionData[currentQuestion].correctAnswer,
       useranswer: userAnswer,
       usercorrect: isCorrect,
       // gets time stamp by hours and minutes
@@ -76,17 +106,17 @@ const QuizQuestions = ({ socket, username, quizroom, questions }) => {
           <h1 className={styles.header}> Live Quiz Room for {quizroom} </h1>
           <hr />
         </div>
+        <div>{displayScore? null: time}</div>
 
-        {console.log("yioooo: ", questions)}
         {displayScore ? (
           <div className="score-section">
-            Scored: {userScore} / {questions.length}
+            Scored: {userScore} / {questionData.length}
           </div>
-        ) : (
+        ) : currentQuestion == questionData.length? null:  (
           <div className={styles.answers}>
             <Question
               index={currentQuestion}
-              question={questions[currentQuestion]}
+              question={questionData[currentQuestion]}
               onHandleUserAnswer={handleUserAnswer}
             />
           </div>
