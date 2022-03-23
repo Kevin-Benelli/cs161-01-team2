@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./Login.css";
 import guard from "../../images/guard.jpg";
 import { Link } from "react-router-dom";
@@ -7,10 +7,63 @@ import SocketClient from "../SocketClient";
 
 const Login = () => {
   // used to post the username and password to the database
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const usernameRef = useRef();
+  const passwordRef = useRef();
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // const [showPassword, setShowPassword] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState("False");
+
+  // Posts username and password for login or create account to server
+  const postAction = (e, action) => {
+    e.preventDefault(); // prevent refresh and submission
+
+    const enteredUsername = usernameRef.current.value;
+    const enteredPassword = passwordRef.current.value;
+    console.log("BRUHH: ", enteredUsername, enteredPassword);
+    if (
+      enteredPassword.length > 5 &&
+      enteredUsername.length >= 5 &&
+      !isLoggedIn
+    ) {
+      try {
+        fetch(`http://localhost:5001/post_${action}`, {
+          method: "POST",
+          mode: "no-cors", // temp solution, cors origin will throw error
+          // credentials: "include",
+          body: JSON.stringify({
+            username: enteredUsername,
+            password: enteredPassword,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          // .then((response) => {
+          //   // response.data holds a message string and an error boolean
+          //   if (response.data.error) {
+          //     setErrorMessage(response.data.message);
+          //     console.log("yoooo:", response.data.error);
+          //   } else {
+          //     console.log("client post success");
+          //     setErrorMessage(null);
+          //     setIsLoggedIn(true);
+          //     // setLoggedInUsername(username);
+          //   }
+          // })
+          .catch((error) => {
+            console.log(error);
+          });
+      } catch (error) {
+        console.log("Bruhhh something went wrong: %s", error);
+      }
+    }
+  };
+
+  // function handleLockClick() {
+  //   setShowPassword(!showPassword);
+  // }
 
   useEffect(() => {
     const storedUserLoggedInInformation = localStorage.getItem("isLoggedIn");
@@ -29,6 +82,12 @@ const Login = () => {
     localStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
   };
+
+  // const submitHandler = (event) => {
+  //   event.preventDefault;
+
+  //   const enteredEmail =
+  // }
 
   // function handleLockClick() {
   //   setShowPassword(!showPassword);
@@ -51,10 +110,12 @@ const Login = () => {
           </label>
           <br></br>
           <input
+            required
+            ref={usernameRef}
             type="text"
             placeholder="Enter Username"
             onChange={(event) => {
-              setUsername(event.target.value.toUpperCase());
+              // setUsername(event.target.value.toUpperCase());
               console.log(event.target.value.toUpperCase());
             }}
           />
@@ -66,19 +127,32 @@ const Login = () => {
           <br></br>
           <p>
             <input
+              required
+              ref={passwordRef}
               type="password"
               placeholder="Enter Password"
               onChange={(event) => {
-                setPassword(event.target.value.toUpperCase());
+                // setPassword(event.target.value.toUpperCase());
                 console.log(event.target.value.toUpperCase());
               }}
             />
           </p>
 
-          <button className="button" type="login" onClick={loginHandler}>
+          <button
+            // onChange={submitHandler}
+            className="button"
+            type="login"
+            onClick={loginHandler}
+          >
             Login
           </button>
-          <button className="button" type="register">
+          <button
+            onClick={(e) => {
+              postAction(e, "create_account");
+            }}
+            className="button"
+            type="register"
+          >
             Register
           </button>
         </div>
