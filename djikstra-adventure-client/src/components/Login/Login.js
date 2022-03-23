@@ -13,7 +13,7 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   // const [showPassword, setShowPassword] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState("False");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Posts username and password for login or create account to server
   const postAction = (e, action) => {
