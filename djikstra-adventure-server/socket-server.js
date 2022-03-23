@@ -1,12 +1,18 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // const port = process.env.PORT || 5001; // localhost 5001
 const port = 5001; // localhost 5001
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get("/", cors(), async (req, res) => {
   res.send("Yah boi is workin");
@@ -70,8 +76,13 @@ const io = new Server(server, {
     // origin: "http://localhost:3000", // grats permission to accept socket communication with this url
     origin: "*", // grats permission to accept socket communication with this url
     methods: ["GET", "POST"],
+    optionsSuccessStatus: 200,
   },
 });
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+// { credentials: true, origin: "http://localhost:5001" }
 
 // Listen for socket event to be recieved: listens for event with name "connection"
 io.on("connection", (socket) => {
@@ -127,12 +138,13 @@ const db = mysql.createConnection({
   database: "Website",
 });
 
-app.post("/createAccount", async (req, res) => {
+app.post("/post_create_account", cors(), async (req, res) => {
+  // res.json(req.body);
+  console.log("Express received: ", req.data);
   let { username, password } = req.body;
 
-  console.log("/createAccount");
-
-  console.log("Express received: ", req.body);
+  console.log("POST REQUEST RECEIVED: /createAccount");
+  console.log("Express received: ", { username }, { password });
 
   // Add username and password to the database
   db.query(
