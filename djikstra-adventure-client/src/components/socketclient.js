@@ -1,6 +1,6 @@
 import React from "react";
 import { io } from "socket.io-client";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import Quiz from "./Quiz/Quiz";
 import cat_gif from "../images/cs_cat.gif";
 import styles from "./SocketClient.module.css";
@@ -26,19 +26,16 @@ const SocketClient = ({ onLogoutHandler }) => {
       setQuestions(data["questionData"]);
     };
     fetchData().catch((error) => {
-          console.log("Error: ", error);
+      console.log("Error: ", error);
     });
-    
+
     // const delayTimer = setTimeout(() => {
     //   console.log("here ");
-    //   
+    //
     // }, 100);
     setIsLoading(false);
     // return () => clearTimeout(delayTimer);
   }, []);
-
-
-
 
   // function emit socket event to join room.
   const joinRoom = () => {
