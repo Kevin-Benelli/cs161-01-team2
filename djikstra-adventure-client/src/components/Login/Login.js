@@ -4,6 +4,8 @@ import "./Login.css";
 import guard from "../../images/guard.jpg";
 import { Link } from "react-router-dom";
 import SocketClient from "../SocketClient";
+import Axios from "axios";
+import axios from "axios";
 
 const Login = () => {
   // used to post the username and password to the database
@@ -15,56 +17,6 @@ const Login = () => {
   // const [showPassword, setShowPassword] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Posts username and password for login or create account to server
-  const postAction = (e, action) => {
-    e.preventDefault(); // prevent refresh and submission
-
-    const enteredUsername = usernameRef.current.value;
-    const enteredPassword = passwordRef.current.value;
-    console.log("BRUHH: ", enteredUsername, enteredPassword);
-    if (
-      enteredPassword.length > 5 &&
-      enteredUsername.length >= 5 &&
-      !isLoggedIn
-    ) {
-      try {
-        fetch(`http://localhost:5001/post_${action}`, {
-          method: "POST",
-          mode: "no-cors", // temp solution, cors origin will throw error
-          // credentials: "include",
-          body: JSON.stringify({
-            username: enteredUsername,
-            password: enteredPassword,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          // .then((response) => {
-          //   // response.data holds a message string and an error boolean
-          //   if (response.data.error) {
-          //     setErrorMessage(response.data.message);
-          //     console.log("yoooo:", response.data.error);
-          //   } else {
-          //     console.log("client post success");
-          //     setErrorMessage(null);
-          //     setIsLoggedIn(true);
-          //     // setLoggedInUsername(username);
-          //   }
-          // })
-          .catch((error) => {
-            console.log(error);
-          });
-      } catch (error) {
-        console.log("Bruhhh something went wrong: %s", error);
-      }
-    }
-  };
-
-  // function handleLockClick() {
-  //   setShowPassword(!showPassword);
-  // }
-
   useEffect(() => {
     const storedUserLoggedInInformation = localStorage.getItem("isLoggedIn");
 
@@ -73,25 +25,50 @@ const Login = () => {
     }
   }, []);
 
-  const loginHandler = (username, password) => {
-    localStorage.setItem("isLoggedIn", "1");
-    setIsLoggedIn(true);
+  // Posts username and password for login or create account to server
+  const postAction = (e, action) => {
+    e.preventDefault(); // prevent refresh and submission
+    const url = `http://localhost:5000/post_${action}`;
+    console.log("URL: ", url);
+    const enteredUsername = usernameRef.current.value;
+    const enteredPassword = passwordRef.current.value;
+
+    console.log("BRUHH: ", enteredUsername, enteredPassword);
+    if (
+      enteredPassword.length >= 5 &&
+      enteredUsername.length >= 5 &&
+      !isLoggedIn
+    ) {
+      try {
+        axios
+          .post(url, {
+            username: enteredUsername,
+            password: enteredPassword,
+          })
+          .then((response) => {
+            console.log("client response:", response.error);
+            if (response.data.error) {
+              console.log("RES ERROR: ", response.error);
+              return <h1> {response.message}</h1>;
+            } else {
+              console.log("success from client");
+              localStorage.setItem("isLoggedIn", "1");
+              setIsLoggedIn(true);
+            }
+          })
+          .catch((error) => {
+            console.log("Error from client: ", error);
+          });
+      } catch (error) {
+        console.log("Bruhhh something went wrong: %s", error);
+      }
+    }
   };
 
   const logoutHandler = () => {
     localStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
   };
-
-  // const submitHandler = (event) => {
-  //   event.preventDefault;
-
-  //   const enteredEmail =
-  // }
-
-  // function handleLockClick() {
-  //   setShowPassword(!showPassword);
-  // }
 
   //Creates the login page
   return (
@@ -138,11 +115,19 @@ const Login = () => {
             />
           </p>
 
-          <button
+          {/* <button
             // onChange={submitHandler}
             className="button"
             type="login"
             onClick={loginHandler}
+          > */}
+          <button
+            // onChange={submitHandler}
+            className="button"
+            type="login"
+            onClick={(e) => {
+              postAction(e, "login");
+            }}
           >
             Login
           </button>
