@@ -5,7 +5,6 @@ import guard from "../../images/guard.jpg";
 import { Link } from "react-router-dom";
 import SocketClient from "../SocketClient";
 import Axios from "axios";
-import axios from "axios";
 
 const Login = () => {
   // used to post the username and password to the database
@@ -40,11 +39,10 @@ const Login = () => {
       !isLoggedIn
     ) {
       try {
-        axios
-          .post(url, {
-            username: enteredUsername,
-            password: enteredPassword,
-          })
+        Axios.post(url, {
+          username: enteredUsername,
+          password: enteredPassword,
+        })
           .then((response) => {
             console.log("client response:", response.error);
             if (response.data.error) {

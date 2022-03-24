@@ -55,19 +55,20 @@ app.post("/post_login", async (req, res) => {
   console.log("POST REQUEST RECEIVED: /post_login");
   console.log("Express received: ", { username }, { password });
 
+  // validate username and passwords match with db records
   db.query(
     "SELECT username, password FROM users WHERE username = ? AND password = ?",
     [username, password],
     (err, result) => {
       if (result.length < 1) {
-        console.log("SERVER: yooo result was <= 1");
+        // console.log("SERVER: yooo result was <= 1");
         res.send({
           message: "Incorrect username/password",
           error: true,
         });
       } else {
         console.log(err);
-        console.log("SERVER: yoooo we found a match");
+        // console.log("SERVER: yoooo we found a match");
         res.send({
           message: "Login Successful",
           error: false,
