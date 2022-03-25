@@ -2,10 +2,38 @@ const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
 const app = express();
+const bcrypt = require("bcrypt");
+
+// const bodyParser = requrie("body-parser");
+// const cookieParser = require("cookie-parser");
+// const session = require("express-session");
+
+const saltRounds = 10;
+const port = 5000 || process.env.PORT;
 
 app.use(express.json());
-app.use(cors());
-const port = 5000 || process.env.PORT;
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    credentials: true, // allows cookies to be enabled
+  })
+);
+
+// app.use(cookieParser());
+// app.use(bodyParser().urlencoded({ extended: true }));
+// app.use(
+//   session({
+//     key: "userId", // name of cookie we are creating
+//     secret: "cookieSecret",
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       expires: 60 * 60 * 1,
+//     }, // cookie expiration date for when cookie expires
+//   })
+// );
+
 app.use(express.static(__dirname + "/public"));
 // app.get("/", cors(), async (req, res) => {
 //   res.send("Yah boi is workin");
@@ -28,25 +56,31 @@ app.post("/post_create_account", (req, res) => {
   console.log("POST REQUEST RECEIVED: /post_create_account");
   console.log("Express received: ", { username }, { password });
 
-  // // Add username and password to the database
-  db.query(
-    "INSERT INTO users (username, password) VALUES (?,?)",
-    [username, password],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-        res.send({
-          message: "Account creation failed",
-          error: true,
-        });
-      } else {
-        res.send({
-          message: "New account created",
-          error: false,
-        });
-      }
+  bcrypt.hash(password, saltRounds, (error, hash) => {
+    if (error) {
+      console.log(error, hash);
     }
-  );
+
+    // Add username and password to the database
+    db.query(
+      "INSERT INTO users (username, password) VALUES (?,?)",
+      [username, hash],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          res.send({
+            message: "Account creation failed",
+            error: true,
+          });
+        } else {
+          res.send({
+            message: "New account created",
+            error: false,
+          });
+        }
+      }
+    );
+  });
 });
 
 app.post("/post_login", async (req, res) => {
@@ -57,21 +91,37 @@ app.post("/post_login", async (req, res) => {
 
   // validate username and passwords match with db records
   db.query(
-    "SELECT username, password FROM users WHERE username = ? AND password = ?",
-    [username, password],
+    "SELECT * FROM users WHERE username = ?",
+    username,
     (err, result) => {
-      if (result.length < 1) {
-        // console.log("SERVER: yooo result was <= 1");
-        res.send({
-          message: "Incorrect username/password",
-          error: true,
+      console.log("LOGIN RESULT: ", result);
+      if (err) {
+        console.log(err);
+        res.send({ err: err });
+      }
+
+      if (result.length > 0) {
+        // console.log("SERVER: yoooo we found a match");
+        console.log("PASS: ", password, result[0].password);
+        bcrypt.compare(password, result[0].password, (error, response) => {
+          console.log("RES: ", response);
+          if (response) {
+            res.send({
+              message: "Login Successful",
+              error: false,
+            });
+          } else {
+            console.log("HERE: ", response);
+            res.send({
+              message: "Incorrect username/password combination.",
+              error: true,
+            });
+          }
         });
       } else {
-        console.log(err);
-        // console.log("SERVER: yoooo we found a match");
         res.send({
-          message: "Login Successful",
-          error: false,
+          message: "User doesn't exist",
+          error: true,
         });
       }
     }

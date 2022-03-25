@@ -11,7 +11,7 @@ const Login = () => {
   const usernameRef = useRef();
   const passwordRef = useRef();
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [loginResponse, setLoginResponse] = useState("");
 
   // const [showPassword, setShowPassword] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -44,11 +44,17 @@ const Login = () => {
           password: enteredPassword,
         })
           .then((response) => {
-            console.log("client response:", response.error);
+            console.log(
+              "client response:",
+              response.data.message,
+              response.data.error
+            );
             if (response.data.error) {
-              console.log("RES ERROR: ", response.error);
-              return <h1> {response.message}</h1>;
+              setLoginResponse(response.data.message);
+              console.log("RES ERROR: ", response.data.error);
+              return <h1> {response.data.message}</h1>;
             } else {
+              setLoginResponse(response.data.message);
               console.log("success from client");
               localStorage.setItem("isLoggedIn", "1");
               setIsLoggedIn(true);
@@ -138,6 +144,8 @@ const Login = () => {
           >
             Register
           </button>
+
+          <h1> {loginResponse} </h1>
         </div>
       )}
 
