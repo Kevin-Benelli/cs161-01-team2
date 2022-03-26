@@ -36,7 +36,7 @@ const QuizQuestions = ({ socket, username, quizroom, questions }) => {
       clearInterval(timerInterval.current);
       setDisplayScore(true);
     }
-  }, [currentQuestion]);
+  }, [currentQuestion, questionData.length]);
 
   // Listens to whenever there is a change in socket server
   useEffect(() => {

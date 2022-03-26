@@ -10,6 +10,8 @@ const bcrypt = require("bcrypt");
 
 const saltRounds = 10;
 const port = 5000 || process.env.PORT;
+// app.use(express.json());
+// app.use(express.urlencoded());
 
 app.use(express.json());
 app.use(
@@ -69,7 +71,7 @@ app.post("/post_create_account", (req, res) => {
         if (err) {
           console.log(err);
           res.send({
-            message: "Account creation failed",
+            message: "Account creation failed/Username taken",
             error: true,
           });
         } else {
@@ -106,6 +108,9 @@ app.post("/post_login", async (req, res) => {
         bcrypt.compare(password, result[0].password, (error, response) => {
           console.log("RES: ", response);
           if (response) {
+            // console.log("SESSION USER: ", req.session);
+            // req.session.user = result;
+
             res.send({
               message: "Login Successful",
               error: false,

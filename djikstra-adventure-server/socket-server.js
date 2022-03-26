@@ -20,10 +20,6 @@ app.get("/home", cors(), async (req, res) => {
   res.send("This is the data for the home page from Express");
 });
 
-// app.post("/answer", cors(), async (req, res) =>{
-
-// });
-
 app.get("/api/v1/quiz", cors(), async (req, res) => {
   console.log("GET REQUEST RECIEVED");
   res.json({
@@ -83,6 +79,39 @@ const io = new Server(server, {
 // Listen for socket event to be recieved: listens for event with name "connection"
 io.on("connection", (socket) => {
   // listens and passes quiz room id to socket // this is passed through at the client level
+  socket.on("join_quiz_lobby", (data) => {
+    console.log("SOCKET LOBBY!!!!!", data);
+    const userName = data[0];
+    const quizRoom = data[1];
+
+    // if room has not met max user limit (4) then allow users to connect
+    if (io.engine.clientsCount <= totalUserConnectionLimit) {
+      console.log(`User Connected: ${socket.id} / ${userName} / ${quizRoom}`); // should console.log the id of the user
+      socket.join(quizRoom);
+    }
+    // If room has reached max user limit then don't allow connection and throw error
+    else {
+      socket.emit("error", {
+        message: "Reached the maximum number of users for this room",
+      });
+      socket.disconnect();
+      console.log(`User ${socket.id} Disconnected Due to Max Limit`);
+    }
+
+    user_join_data = {
+      userName: userName,
+      quizRoom: quizRoom,
+    };
+
+    console.log(`User ID: ${socket.id} joined the quiz room: ${data}`);
+  });
+
+  socket.on("send_start_game", (data) => {
+    console.log("SOCKET - In send_start_game: ", data);
+    socket.to(data.quizroom).emit("recieve_start_game", data);
+  });
+
+  // listens and passes quiz room id to socket // this is passed through at the client level
   socket.on("join_quiz_room", (data) => {
     // if room has not met max user limit (4) then allow users to connect
     if (io.engine.clientsCount <= totalUserConnectionLimit) {
@@ -98,6 +127,8 @@ io.on("connection", (socket) => {
       console.log(`User ${socket.id} Disconnected Due to Max Limit`);
     }
 
+    socket.to(data.quizroom).emit("receive_player", data);
+
     console.log(`User ID: ${socket.id} joined the quiz room: ${data}`);
   });
 
@@ -105,7 +136,7 @@ io.on("connection", (socket) => {
   socket.on("send_message", (data) => {
     // Emits messages you send to all other uses in the quizRoom
     console.log("send_message:", data);
-    socket.to(data.quizroom).emit("receive_message", data);
+    socket.to(data.quizroom).emit("recieve_user", data);
   });
 
   // disconnect from the server at the end
