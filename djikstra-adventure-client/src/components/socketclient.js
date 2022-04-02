@@ -22,12 +22,12 @@ const SocketClient = ({ onLogoutHandler }) => {
   const [questions, setQuestions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [lobbyUsernames, setLobbyUsernames] = useState([]);
+  const [lobbyUsers, setLobbyUsers] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
-      let response = await await fetch("http://localhost:5001/api/v1/quiz");
+      let response = await fetch("http://localhost:5001/api/v1/quiz");
       const data = await response.json();
       console.log("here: ", data["questionData"]);
 
@@ -45,29 +45,16 @@ const SocketClient = ({ onLogoutHandler }) => {
     // return () => clearTimeout(delayTimer);
   }, []);
 
-  // useEffect(() => {
-  //   console.log("HEEEERE: ", socket.id);
-  //   socket.on("recieve_user_join", (username) => {
-  //     console.log("RECIEVED NAME FROM SOCKET: ", username);
-  //     setLobbyUsernames((prevUsers) => {
-  //       return [username, ...prevUsers];
-  //     });
-  //   });
-  // }, [socket]);
-
   // function emit socket event to join lobby.
-  const joinLobby = () => {
-    console.log("joinRoom clicked");
+  const joinLobby = async () => {
+    console.log("joinLobby clicked");
 
     // GET HASHSET AND CHECK IF Quiz Room Key EXISTS IN Quiz Room Key SET; ELSE ERROR MESSAGE
     if (userName !== "" && quizRoom !== "") {
       socket.emit("join_quiz_lobby", [userName, quizRoom]); // Add time here
-      // socket.emit("join_quiz_room", quizRoom); // Add time here
+      setLobbyUsers((prevUsers) => [userName, ...prevUsers]);
       setShowQuizBox(true);
     }
-    socket.on("user_join_data", (user_join_data) => {
-      console.log("user_join_data: ", user_join_data, user_join_data.quizRoom);
-    });
   };
 
   return (
@@ -122,7 +109,7 @@ const SocketClient = ({ onLogoutHandler }) => {
             username={userName}
             quizroom={quizRoom}
             questions={questions}
-            lobbyUsernames={[lobbyUsernames]}
+            lobbyUsernames={lobbyUsers}
           />
         </>
       )}
