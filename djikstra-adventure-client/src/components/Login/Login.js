@@ -16,6 +16,8 @@ const Login = () => {
   // const [showPassword, setShowPassword] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  Axios.defaults.withCredentials = true;
+
   useEffect(() => {
     const storedUserLoggedInInformation = localStorage.getItem("isLoggedIn");
 
@@ -23,6 +25,14 @@ const Login = () => {
       setIsLoggedIn(true);
     }
   }, []);
+
+  // useEffect(() => {
+  //   Axios.get("http://localhost:5000/post_login").then((response) => {
+  //     if (response.data.loggedIn == true) {
+  //       setLoginResponse(response.data.user[0].username);
+  //     }
+  //   });
+  // }, []);
 
   // Posts username and password for login or create account to server
   const postAction = (e, action) => {

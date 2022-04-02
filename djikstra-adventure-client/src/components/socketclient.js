@@ -12,14 +12,22 @@ const SocketClient = ({ onLogoutHandler }) => {
   const [userName, setUsername] = useState("");
   const [quizRoom, setQuizRoom] = useState("");
   const [showQuizBox, setShowQuizBox] = useState(false);
+  // <QuizQuestions
+  //       socket={socket}
+  //       username={username}
+  //       quizroom={quizroom}
+  //       questions={questions}
+  //     />
 
   const [questions, setQuestions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [lobbyUsers, setLobbyUsers] = useState([]);
+
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
-      let response = await await fetch("http://localhost:5001/api/v1/quiz");
+      let response = await fetch("http://localhost:5001/api/v1/quiz");
       const data = await response.json();
       console.log("here: ", data["questionData"]);
 
@@ -37,13 +45,14 @@ const SocketClient = ({ onLogoutHandler }) => {
     // return () => clearTimeout(delayTimer);
   }, []);
 
-  // function emit socket event to join room.
-  const joinRoom = () => {
-    console.log("joinRoom clicked");
+  // function emit socket event to join lobby.
+  const joinLobby = async () => {
+    console.log("joinLobby clicked");
 
     // GET HASHSET AND CHECK IF Quiz Room Key EXISTS IN Quiz Room Key SET; ELSE ERROR MESSAGE
     if (userName !== "" && quizRoom !== "") {
-      socket.emit("join_quiz_room", quizRoom); // Add time here
+      socket.emit("join_quiz_lobby", [userName, quizRoom]); // Add time here
+      setLobbyUsers((prevUsers) => [userName, ...prevUsers]);
       setShowQuizBox(true);
     }
   };
@@ -53,7 +62,7 @@ const SocketClient = ({ onLogoutHandler }) => {
       {/* If quiz box is not displayed show enter quiz room; else show quiz box */}
       {!showQuizBox && !isLoading ? (
         <div className="joinQuizRoom">
-          <h1>Join Quiz Room Now!</h1>
+          <h1>Join Quiz Lobby Now!</h1>
           <hr />
 
           <img src={cat_gif} alt="cat gif" className={styles.image} />
@@ -72,19 +81,19 @@ const SocketClient = ({ onLogoutHandler }) => {
             // className="joinQuizInputField"
             className={styles.input}
             type="text"
-            placeholder="Enter Quiz Room Key"
+            placeholder="Enter Quiz Lobby Key"
             onChange={(event) => {
               setQuizRoom(event.target.value.toUpperCase());
               // console.log(event.target.value.toUpperCase());
             }}
             onKeyPress={(event) => {
               // If user types message and presses enter then send the message
-              event.key === "Enter" && joinRoom();
+              event.key === "Enter" && joinLobby();
             }}
           />
 
-          <button className={styles.button} onClick={joinRoom}>
-            Join Room
+          <button className={styles.button} onClick={joinLobby}>
+            Join Lobby
           </button>
           <button className={styles.button} onClick={onLogoutHandler}>
             Logout
@@ -93,12 +102,16 @@ const SocketClient = ({ onLogoutHandler }) => {
       ) : (
         // Call our quiz component and pass in the socket
         // Keep track of the username and quiz room being used so we pass that in as pops
-        <Quiz
-          socket={socket}
-          username={userName}
-          quizroom={quizRoom}
-          questions={questions}
-        />
+
+        <>
+          <Quiz
+            socket={socket}
+            username={userName}
+            quizroom={quizRoom}
+            questions={questions}
+            lobbyUsernames={lobbyUsers}
+          />
+        </>
       )}
     </div>
   );
