@@ -125,32 +125,3 @@ const QuizQuestions = ({ socket, username, quizroom, questions }) => {
 };
 
 export default QuizQuestions;
-
-// Extras
-// useEffect(() => {
-//   const delay = setTimeout(() => {
-//     console.log("in delayyyy");
-//     setCurrentQuestion(question);
-//   }, 3000);
-//   // return () => clearTimeout(delay);
-// }, []);
-
-// useEffect(() => {
-//   const delay = setTimeout(() => {
-//     console.log("in delayyyy");
-//     setCurrentQuestion(questionInterval);
-//   }, 2000);
-//   return () => clearTimeout(delay);
-// }, [questionInterval, currentQuestion]);
-
-// let questionInterval = questions.map((question, index) => {
-//   return (
-//     <Question
-//       question={question}
-//       index={index}
-//       socket={socket}
-//       username={username}
-//       quizroom={quizroom}
-//     />
-//   );
-// });

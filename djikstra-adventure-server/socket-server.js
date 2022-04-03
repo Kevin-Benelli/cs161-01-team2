@@ -76,6 +76,8 @@ const io = new Server(server, {
 
 // { credentials: true, origin: "http://localhost:5001" }
 
+// const server_lobby_users = new Map();
+const server_lobby_users = {};
 // Listen for socket event to be received: listens for event with name "connection"
 io.on("connection", (socket) => {
   // listens and passes quiz room id to socket // this is passed through at the client level
@@ -90,8 +92,10 @@ io.on("connection", (socket) => {
       console.log(`User ID: ${socket.id} joined the quiz room: ${data}`);
       console.log("usrn: ", userName);
       socket.join(quizRoom);
-      // socket.to(data.quizRoom).emit("receive_users", userName);
-
+      // Emits users who join quizRoom in user obj
+      socket
+        .to(quizRoom)
+        .emit("receive_users", Object.values(server_lobby_users));
       console.log("Joined lobby");
     }
     // If room has reached max user limit then don't allow connection and throw error
@@ -131,15 +135,37 @@ io.on("connection", (socket) => {
 
   // listens for message data to be emitted from client side (quiz.js) / creates event send_message
   socket.on("send_users", (data) => {
-    // Emits messages you send to all other uses in the quizRoom
+    const user = {
+      userID: socket.id,
+      username: data.username,
+      quizroom: data.quizroom,
+    }; // create user obj
+
+    server_lobby_users[socket.id] = user;
+
+    console.log(
+      "user: ",
+      server_lobby_users,
+      "length: ",
+      Object.keys(server_lobby_users).length,
+      "value: ",
+      Object.values(server_lobby_users)
+    );
+
     console.log("Server receive_users:", data.username, data.quizroom);
-    // socket.to(data.chatroom).emit("receive_message", data);
-    socket.to(data.quizroom).emit("receive_users", data.username);
+
+    // Emits users who join quizRoom in user obj
+    io.sockets
+      .to(data.quizroom)
+      .emit("receive_users", Object.values(server_lobby_users));
   });
 
   // disconnect from the server at the end / need to add to remove username from lobby when disconnect
   socket.on("disconnect", () => {
+    const username = server_lobby_users[socket.id];
+    delete server_lobby_users[socket.id];
     console.log("User Disconnected", socket.id);
+    io.sockets.emit("disconnected", socket.id);
   });
 });
 
