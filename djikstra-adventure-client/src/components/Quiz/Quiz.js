@@ -82,7 +82,7 @@ const Quiz = ({ socket, username, quizroom, questions, lobbyUsernames }) => {
               <h1>
                 Users In Lobby:
                 {lobbyUsers.map(({ username, userID }) => {
-                  return <li key={userID}> USER: {username}</li>;
+                  return <ul key={userID}> USER: {username}</ul>;
                 })}
               </h1>
               <button onClick={startGame}>Start Game!</button>
