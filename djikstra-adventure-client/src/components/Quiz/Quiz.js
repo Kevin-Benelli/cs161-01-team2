@@ -64,11 +64,11 @@ const Quiz = ({ socket, username, quizroom, questions, lobbyUsernames }) => {
     });
 
     socket.on("disconnected", (id) => {
-      console.log("IN DISCONNECTED EFFECT");
+      console.log("IN DISCONNECTED EFFECT", lobbyUsers);
       setLobbyUsers((prevUsers) => [
         ...prevUsers.filter((prevUser) => prevUser.id !== id),
       ]);
-      console.log("User deleted: ", id);
+      console.log("User deleted: ", id, lobbyUsers);
     });
   }, [socket]);
 
@@ -83,7 +83,12 @@ const Quiz = ({ socket, username, quizroom, questions, lobbyUsernames }) => {
               <h1>
                 Users In Lobby:
                 {lobbyUsers.map(({ username, userID }) => {
-                  return <li key={userID}> USER: {username}</li>;
+                  return (
+                    <li key={userID}>
+                      {" "}
+                      USER: {userID} {username}
+                    </li>
+                  );
                 })}
               </h1>
               <button onClick={startGame}>Start Game!</button>

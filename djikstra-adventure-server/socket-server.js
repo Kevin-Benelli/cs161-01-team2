@@ -78,6 +78,9 @@ const io = new Server(server, {
 
 // const server_lobby_users = new Map();
 const server_lobby_users = {};
+// const server_lobby_rooms = new Map();
+const server_lobby_rooms = {};
+
 // Listen for socket event to be received: listens for event with name "connection"
 io.on("connection", (socket) => {
   // listens and passes quiz room id to socket // this is passed through at the client level
@@ -141,15 +144,36 @@ io.on("connection", (socket) => {
       quizroom: data.quizroom,
     }; // create user obj
 
-    server_lobby_users[socket.id] = user;
+    // server_lobby_users[socket.id] = user;
+    server_lobby_users[data.quizroom] = user;
+
+    // console.log("rooooooom: ", room);
+    if (server_lobby_rooms[data.quizroom]) {
+      console.log("hereeeeeee ", data.quizroom);
+      server_lobby_rooms[data.quizroom].push(user);
+    } else {
+      console.log("elseeeeeee ", data.quizroom);
+      server_lobby_rooms[data.quizroom] = [user];
+    }
+
+    // server_lobby_rooms[data.quizroom] = data.username;
+    // server_lobby_rooms.set(data.quizroom, data.username);
 
     console.log(
-      "user: ",
-      server_lobby_users,
+      // "user: ",
+      // server_lobby_users,
+      // "length: ",
+      // Object.keys(server_lobby_users).length,
+      // "value: ",
+      // Object.values(server_lobby_users),
+      "quiz room: ",
+      data.quizroom,
+      "// ALL Room values:  ",
+      Object.values(server_lobby_rooms),
+      "// Specific Room values:  ",
+      Object.values(server_lobby_rooms[data.quizroom]),
       "length: ",
-      Object.keys(server_lobby_users).length,
-      "value: ",
-      Object.values(server_lobby_users)
+      Object.keys(server_lobby_users[data.quizroom]).length
     );
 
     console.log("Server receive_users:", data.username, data.quizroom);
@@ -157,13 +181,40 @@ io.on("connection", (socket) => {
     // Emits users who join quizRoom in user obj
     io.sockets
       .to(data.quizroom)
-      .emit("receive_users", Object.values(server_lobby_users));
+      .emit("receive_users", Object.values(server_lobby_rooms[data.quizroom]));
+    // .emit("receive_users", Object.values(server_lobby_users));
   });
 
   // disconnect from the server at the end / need to add to remove username from lobby when disconnect
-  socket.on("disconnect", () => {
+  socket.on("disconnect", (e) => {
+    console.log("disconnect event", e);
     const username = server_lobby_users[socket.id];
     delete server_lobby_users[socket.id];
+
+    for (const room in server_lobby_rooms) {
+      console.log("ROOM LOOP: ", room);
+      // when user disconnects, pop the user out of of all rooms
+      for (const userIndex in room) {
+        if (
+          server_lobby_rooms[room][userIndex] &&
+          server_lobby_rooms[room][userIndex].userID == socket.id
+        ) {
+          console.log(
+            "MATCH!: ",
+            server_lobby_rooms[room][userIndex].userID,
+            server_lobby_rooms[room][userIndex]
+          );
+          server_lobby_rooms[room].pop(userIndex);
+        }
+      }
+    }
+
+    // for (const room in server_lobby_rooms) {
+    //   for (const user in room) {
+    //     console.log("REDUCED LOOP: ", server_lobby_rooms[room]);
+    //   }
+    // }
+
     console.log("User Disconnected", socket.id);
     io.sockets.emit("disconnected", socket.id);
   });
