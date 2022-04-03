@@ -6,28 +6,12 @@ import Question from "./Question";
 import QuizQuestions from "./QuizQuestions";
 
 const Quiz = ({ socket, username, quizroom, questions, lobbyUsernames }) => {
-  // const [selectedAnswer, setSelectedAnswer] = useState("");
-  const [isCorrect, setIsCorrect] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [userScore, setUserScore] = useState(0);
-  const [displayScore, setDisplayScore] = useState(false);
-  const timeLimit = 20;
-
-  const questionsInterval = useRef();
-  const [questionData, setQuestionData] = useState(questions);
-  const [time, setTimer] = useState(timeLimit);
-  const timerInterval = useRef();
-
   const [showQuizBox, setShowQuizBox] = useState(false);
-  const [lobbyUsers, setLobbyUsers] = useState((prevUsers) => [
-    prevUsers,
-    ...lobbyUsernames,
-  ]);
+  const [lobbyUsers, setLobbyUsers] = useState([]);
 
   useEffect(() => {
-    // Update current use on init load
-    console.log("lobby users take in: ", lobbyUsernames);
-    setLobbyUsers(() => [lobbyUsernames]);
+    // Update current user on init load
+    refreshUsers();
   }, []);
 
   // function emit socket event to join room.
@@ -51,23 +35,39 @@ const Quiz = ({ socket, username, quizroom, questions, lobbyUsernames }) => {
       quizroom: quizroom,
       username: username,
     };
+
     await socket.emit("send_users", user_data); // async await for socket receive
-    // setLobbyUsers((prevUsers) => [username, ...prevUsers]);
+
+    setLobbyUsers((prevUsers) => [...prevUsers, username]);
   };
 
   // Listens to whenever there is a change in socket server
   useEffect(() => {
     // receive socket await and update users within lobby
     console.log("CLIENT: IN socket update Use Effect");
-    socket.on("receive_users", (username) => {
-      console.log("IN UPDATE USERS USE EFFECT:", username);
-      setLobbyUsers((prevUsers) => [username, ...prevUsers]);
+    socket.on("receive_users", (users) => {
+      console.log(
+        "IN UPDATE USERS USE EFFECT: /////",
+        users,
+        "////",
+        users[0].username
+      );
+      // setLobbyUsers((prevUsers) => [...prevUsers, username.username]);
+      setLobbyUsers(users);
     });
 
     // receive socket await signal for all parties within lobby after a users clicks start game
     socket.on("receive_start_game", (data) => {
       console.log("IN START GAME USE EFFECT:", data);
       setShowQuizBox(true);
+    });
+
+    socket.on("disconnected", (updatedUsers) => {
+      console.log("IN DISCONNECTED EFFECT", lobbyUsers);
+      setLobbyUsers(updatedUsers);
+
+      // console.log("User deleted: ", id, [...lobbyUsers]);
+      console.log("User deleted, updated users: ", updatedUsers);
     });
   }, [socket]);
 
@@ -81,12 +81,16 @@ const Quiz = ({ socket, username, quizroom, questions, lobbyUsernames }) => {
             <>
               <h1>
                 Users In Lobby:
-                {lobbyUsers.map((user) => {
-                  return <ul> User: {user}</ul>;
+                {lobbyUsers.map(({ username, userID }) => {
+                  return (
+                    <li key={userID}>
+                      {" "}
+                      USER: {userID} {username}
+                    </li>
+                  );
                 })}
               </h1>
               <button onClick={startGame}>Start Game!</button>
-              <button onClick={refreshUsers}>Refresh Users</button>
             </>
           )}
           {showQuizBox && (

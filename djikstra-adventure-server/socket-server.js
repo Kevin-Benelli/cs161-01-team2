@@ -76,6 +76,8 @@ const io = new Server(server, {
 
 // { credentials: true, origin: "http://localhost:5001" }
 
+const server_lobby_rooms = {};
+
 // Listen for socket event to be received: listens for event with name "connection"
 io.on("connection", (socket) => {
   // listens and passes quiz room id to socket // this is passed through at the client level
@@ -90,9 +92,16 @@ io.on("connection", (socket) => {
       console.log(`User ID: ${socket.id} joined the quiz room: ${data}`);
       console.log("usrn: ", userName);
       socket.join(quizRoom);
-      // socket.to(data.quizRoom).emit("receive_users", userName);
 
-      console.log("Joined lobby");
+      // console.log("rooooooom: ", room);
+      if (server_lobby_rooms[data.quizroom]) {
+        // Emits users who join quizRoom in user obj
+        socket
+          .to(quizRoom)
+          // .emit("receive_users", Object.values(server_lobby_users));
+          .emit("receive_users", Object.values(server_lobby_rooms[quizRoom]));
+        console.log("Joined lobby");
+      }
     }
     // If room has reached max user limit then don't allow connection and throw error
     else {
@@ -126,20 +135,56 @@ io.on("connection", (socket) => {
     }
 
     console.log(`User ID: ${socket.id} joined the quiz room: ${data}`);
-    // socket.to(data.quizroom).emit("receive_users", data);
   });
 
   // listens for message data to be emitted from client side (quiz.js) / creates event send_message
   socket.on("send_users", (data) => {
-    // Emits messages you send to all other uses in the quizRoom
-    console.log("Server receive_users:", data.username, data.quizroom);
-    // socket.to(data.chatroom).emit("receive_message", data);
-    socket.to(data.quizroom).emit("receive_users", data.username);
+    const user = {
+      userID: socket.id,
+      username: data.username,
+      quizroom: data.quizroom,
+    }; // create user obj
+
+    // dynamicaly append users to dictionary array by quizroom
+    if (server_lobby_rooms[data.quizroom]) {
+      server_lobby_rooms[data.quizroom].push(user);
+    } else {
+      server_lobby_rooms[data.quizroom] = [user];
+    }
+
+    // Emits users who join quizRoom in user obj
+    io.sockets
+      .to(data.quizroom)
+      .emit("receive_users", Object.values(server_lobby_rooms[data.quizroom]));
   });
 
   // disconnect from the server at the end / need to add to remove username from lobby when disconnect
-  socket.on("disconnect", () => {
-    console.log("User Disconnected", socket.id);
+  socket.on("disconnect", (e) => {
+    console.log("disconnect event", e);
+    const username = server_lobby_users[socket.id];
+    delete server_lobby_users[socket.id];
+    let room_match = "";
+
+    for (const room in server_lobby_rooms) {
+      // when user disconnects, remove the user out of of the lobby room
+      for (const userIndex in room) {
+        if (
+          server_lobby_rooms[room][userIndex] &&
+          server_lobby_rooms[room][userIndex].userID == socket.id
+        ) {
+          // if we find a match of the user id who disconnected, then remove the user from the lobby
+          server_lobby_rooms[room].splice(userIndex, 1);
+          room_match = room;
+        }
+      }
+    }
+
+    if (server_lobby_rooms[room_match]) {
+      console.log("User Disconnected", socket.id);
+      io.sockets
+        .to(room_match)
+        .emit("disconnected", server_lobby_rooms[room_match]);
+    }
   });
 });
 
