@@ -75,19 +75,17 @@ const Quiz = ({ socket, username, quizroom, questions, lobbyUsernames }) => {
     <React.Fragment>
       <div className="quiz-room-window">
         <div className="quiz-room-header-title">
-          <h1 className={styles.header}> Quiz Room Lobby for {quizroom} </h1>
           {/* {socket.emit("join_quiz_lobby")} */}
           {!showQuizBox && (
             <>
+              <h1 className={styles.header}>
+                {" "}
+                Quiz Room Lobby for {quizroom}{" "}
+              </h1>
               <h1>
                 Users In Lobby:
                 {lobbyUsers.map(({ username, userID }) => {
-                  return (
-                    <li key={userID}>
-                      {" "}
-                      USER: {userID} {username}
-                    </li>
-                  );
+                  return <ul key={userID}> USER: {username}</ul>;
                 })}
               </h1>
               <button onClick={startGame}>Start Game!</button>

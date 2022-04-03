@@ -161,8 +161,7 @@ io.on("connection", (socket) => {
   // disconnect from the server at the end / need to add to remove username from lobby when disconnect
   socket.on("disconnect", (e) => {
     console.log("disconnect event", e);
-    const username = server_lobby_users[socket.id];
-    delete server_lobby_users[socket.id];
+
     let room_match = "";
 
     for (const room in server_lobby_rooms) {

@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import styles from "./QuizQuestions.module.css";
 import Question from "./Question";
+import Score from "./Score";
 
 const QuizQuestions = ({ socket, username, quizroom, questions }) => {
   // const [selectedAnswer, setSelectedAnswer] = useState("");
@@ -107,9 +108,11 @@ const QuizQuestions = ({ socket, username, quizroom, questions }) => {
         <div className={styles.timer}>{displayScore ? null : time}</div>
 
         {displayScore ? (
-          <span className={styles.score}>
-            {username} Scored: {userScore} / {questionData.length}
-          </span>
+          <Score
+            username={username}
+            userscore={userScore}
+            questionlength={questionData.length}
+          />
         ) : currentQuestion === questionData.length ? null : (
           <div className={styles.answers}>
             <Question
