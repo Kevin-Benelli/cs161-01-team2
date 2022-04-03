@@ -133,6 +133,11 @@ app.post("/post_login", async (req, res) => {
   );
 });
 
+app.post("/api/v1/post_score", async (req, res) => {
+  const { username, userscore, questionlength } = req.body;
+  console.log("Score: ", username, userscore, questionlength);
+});
+
 app.post("/AccountStats", async (req, res) => {
   let { FK_UserID, Login, day } = req.body;
 

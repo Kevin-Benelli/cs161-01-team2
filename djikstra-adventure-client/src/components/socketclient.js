@@ -12,13 +12,6 @@ const SocketClient = ({ onLogoutHandler }) => {
   const [userName, setUsername] = useState("");
   const [quizRoom, setQuizRoom] = useState("");
   const [showQuizBox, setShowQuizBox] = useState(false);
-  // <QuizQuestions
-  //       socket={socket}
-  //       username={username}
-  //       quizroom={quizroom}
-  //       questions={questions}
-  //     />
-
   const [questions, setQuestions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -37,12 +30,7 @@ const SocketClient = ({ onLogoutHandler }) => {
       console.log("Error: ", error);
     });
 
-    // const delayTimer = setTimeout(() => {
-    //   console.log("here ");
-    //
-    // }, 100);
     setIsLoading(false);
-    // return () => clearTimeout(delayTimer);
   }, []);
 
   // function emit socket event to join lobby.
