@@ -30,7 +30,6 @@ const Quiz = ({ socket, username, quizroom, questions, lobbyUsernames }) => {
 
   const refreshUsers = async () => {
     console.log("refreshUsers Clicked!", [quizroom, username]);
-    // setLobbyUsers((prevUsers) => [...prevUsers, username]);
     // Send username to all other users within lobby room (need up update when users disconnect)
     const user_data = {
       quizroom: quizroom,
@@ -63,12 +62,12 @@ const Quiz = ({ socket, username, quizroom, questions, lobbyUsernames }) => {
       setShowQuizBox(true);
     });
 
-    socket.on("disconnected", (id) => {
+    socket.on("disconnected", (updatedUsers) => {
       console.log("IN DISCONNECTED EFFECT", lobbyUsers);
-      setLobbyUsers((prevUsers) => [
-        ...prevUsers.filter((prevUser) => prevUser.id !== id),
-      ]);
-      console.log("User deleted: ", id, lobbyUsers);
+      setLobbyUsers(updatedUsers);
+
+      // console.log("User deleted: ", id, [...lobbyUsers]);
+      console.log("User deleted, updated users: ", updatedUsers);
     });
   }, [socket]);
 
@@ -92,7 +91,6 @@ const Quiz = ({ socket, username, quizroom, questions, lobbyUsernames }) => {
                 })}
               </h1>
               <button onClick={startGame}>Start Game!</button>
-              <button onClick={refreshUsers}>Refresh Users</button>
             </>
           )}
           {showQuizBox && (
