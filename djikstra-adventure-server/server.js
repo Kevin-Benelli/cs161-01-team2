@@ -132,10 +132,33 @@ app.post("/post_login", async (req, res) => {
     }
   );
 });
+const MOMENT = require("moment");
 
 app.post("/api/v1/post_score", async (req, res) => {
-  const { username, userscore, questionlength } = req.body;
-  console.log("Score: ", username, userscore, questionlength);
+  console.log("POST REQUEST RECEIVED: /api/v1/post_score");
+  let scoreID = 100;
+  const { quizroom, username, userscore, questionlength } = req.body;
+  console.log("Score: ", quizroom, username, userscore, questionlength);
+  let datetime = MOMENT().format("YYYY-MM-DD  HH:mm:ss.000");
+
+  db.query(
+    "INSERT INTO scores (room, username, userscore, questionlength, timestamp) VALUES (?,?,?,?,?)",
+    [quizroom, username, userscore, questionlength, datetime],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.send({
+          message: "Could not post Score",
+          error: true,
+        });
+      } else {
+        res.send({
+          message: "posted score",
+          error: false,
+        });
+      }
+    }
+  );
 });
 
 app.post("/AccountStats", async (req, res) => {
