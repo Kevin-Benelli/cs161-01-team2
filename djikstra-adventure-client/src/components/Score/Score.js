@@ -1,18 +1,32 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Score.module.css";
-import { Axios } from "axios";
+import Axios from "axios";
 import { View, Link } from "react-router-dom";
 
-const Score = ({ username, userscore, questionlength }) => {
-  //   Axios.defaults.withCredentials = true;
-
+const Score = ({ quizroom, username, userscore, questionlength }) => {
   const [scoreResponse, setScoreResponse] = useState("");
   const [showGameStats, setGameStates] = useState(false);
 
-  const postScore = () => {
+  Axios.defaults.withCredentials = true;
+
+  useEffect(() => {
+    postScore();
+  }, []);
+
+  const postScore = (e, action) => {
+    const timestamp = {
+      // gets time stamp by hours and minutes
+      time:
+        new Date(Date.now()).getHours() +
+        ":" +
+        new Date(Date.now()).getMinutes() +
+        ":" +
+        new Date(Date.now()).getSeconds(),
+    };
     let url = "http://localhost:5000/api/v1/post_score";
     try {
       Axios.post(url, {
+        quizroom,
         username,
         userscore,
         questionlength,
@@ -40,13 +54,17 @@ const Score = ({ username, userscore, questionlength }) => {
     console.log(e);
     const url = "http://localhost:5000/api/v1/get_scores";
     try {
-      Axios.post(url);
-    } catch (error) {}
+      Axios.get(url).then((response) => {
+        console.log("GET SCORE REQUEST: ", response.data);
+      });
+    } catch (error) {
+      console.log("GET REQUEST ERROR: ", error);
+    }
   };
-  useEffect(() => {
-    postScore();
-  }, []);
 
+  const refreshPage = () => {
+    window.location.reload();
+  };
   return (
     <>
       <span className={styles.score}>
@@ -57,9 +75,9 @@ const Score = ({ username, userscore, questionlength }) => {
         Game Statistics
       </button>
 
-      <Link to="/" className={styles.button}>
+      <button className={styles.button} onClick={refreshPage}>
         Return To Lobby
-      </Link>
+      </button>
     </>
   );
 };

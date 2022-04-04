@@ -109,6 +109,7 @@ const QuizQuestions = ({ socket, username, quizroom, questions }) => {
 
         {displayScore ? (
           <Score
+            quizroom={quizroom}
             username={username}
             userscore={userScore}
             questionlength={questionData.length}
