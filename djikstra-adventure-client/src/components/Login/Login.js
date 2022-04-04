@@ -42,7 +42,6 @@ const Login = () => {
     const enteredUsername = usernameRef.current.value;
     const enteredPassword = passwordRef.current.value;
 
-    console.log("BRUHH: ", enteredUsername, enteredPassword);
     if (
       enteredPassword.length >= 5 &&
       enteredUsername.length >= 5 &&
@@ -76,6 +75,14 @@ const Login = () => {
       } catch (error) {
         console.log("Bruhhh something went wrong: %s", error);
       }
+    } else if (enteredPassword.length >= 5 && enteredUsername.length <= 5) {
+      setLoginResponse("Username must be greater or equal to 5 chars.");
+    } else if (enteredPassword.length <= 5 && enteredUsername.length >= 5) {
+      setLoginResponse("Password must be greater or equal to 5 chars.");
+    } else {
+      setLoginResponse(
+        "Username and Password both must be greater or equal to 5 chars."
+      );
     }
   };
 
