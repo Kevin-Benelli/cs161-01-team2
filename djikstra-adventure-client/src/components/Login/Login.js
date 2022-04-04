@@ -109,6 +109,10 @@ const Login = () => {
               // setUsername(event.target.value.toUpperCase());
               console.log(event.target.value.toUpperCase());
             }}
+            onKeyPress={(event) => {
+              // If user types message and presses enter then send the message
+              event.key === "Enter" && postAction(event, "login");
+            }}
           />
           <br></br>
           <label for="password">
@@ -126,17 +130,14 @@ const Login = () => {
                 // setPassword(event.target.value.toUpperCase());
                 console.log(event.target.value.toUpperCase());
               }}
+              onKeyPress={(event) => {
+                // If user types message and presses enter then send the message
+                event.key === "Enter" && postAction(event, "login");
+              }}
             />
           </p>
 
-          {/* <button
-            // onChange={submitHandler}
-            className="button"
-            type="login"
-            onClick={loginHandler}
-          > */}
           <button
-            // onChange={submitHandler}
             className="button"
             type="login"
             onClick={(e) => {

@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import styles from "./QuizQuestions.module.css";
 import Question from "./Question";
-import Score from "./Score";
+import Score from "../Score/Score";
 
 const QuizQuestions = ({ socket, username, quizroom, questions }) => {
   // const [selectedAnswer, setSelectedAnswer] = useState("");

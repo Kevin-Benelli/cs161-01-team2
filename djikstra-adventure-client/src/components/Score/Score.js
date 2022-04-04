@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import styles from "./QuizQuestions.module.css";
+import styles from "./Score.module.css";
 import { Axios } from "axios";
+import { View, Link } from "react-router-dom";
 
 const Score = ({ username, userscore, questionlength }) => {
   //   Axios.defaults.withCredentials = true;
@@ -52,7 +53,13 @@ const Score = ({ username, userscore, questionlength }) => {
         {username} Scored: {userscore} / {questionlength}
       </span>
       <br />
-      <button onClick={getScores}> Get Game Statistics </button>
+      <button className={styles.button} onClick={getScores}>
+        Game Statistics
+      </button>
+
+      <Link to="/" className={styles.button}>
+        Return To Lobby
+      </Link>
     </>
   );
 };
