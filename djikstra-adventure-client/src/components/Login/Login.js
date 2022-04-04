@@ -156,6 +156,9 @@ const Login = () => {
             Register
           </button>
 
+          {/* <Link to="/home" className="button">
+            Admin Login
+          </Link> */}
           <h1> {loginResponse} </h1>
         </div>
       )}
