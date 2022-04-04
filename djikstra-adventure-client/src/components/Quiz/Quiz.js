@@ -85,6 +85,7 @@ const Quiz = ({ socket, username, quizroom, questions, lobbyUsernames }) => {
               <h1>
                 Users In Lobby:
                 {lobbyUsers.map(({ username, userID }) => {
+                  console.log({ userID });
                   return <ul key={userID}> USER: {username}</ul>;
                 })}
               </h1>

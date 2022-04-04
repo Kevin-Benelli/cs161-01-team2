@@ -1,0 +1,28 @@
+.answers {
+  margin-bottom: 5vh;
+  margin-left: 5vh;
+  margin-right: 5vh;
+}
+
+.header {
+  padding: 3vh;
+  text-align: center;
+  font-size: 6vh;
+}
+
+.score {
+  font-size: 5vh;
+  line-height: 40vh;
+}
+
+.button {
+  border-radius: 5vh;
+  font-size: 5vh;
+  background-color: rgb(42, 156, 42);
+  padding: 2vh;
+  margin: 1vw;
+}
+
+.button:active {
+  background-color: aquamarine;
+}
