@@ -17,6 +17,8 @@ const SocketClient = ({ onLogoutHandler }) => {
 
   const [lobbyUsers, setLobbyUsers] = useState([]);
 
+  const [lobbyFullErrorMessage, setLobbyFullErrorMessage] = useState("");
+
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
@@ -39,10 +41,18 @@ const SocketClient = ({ onLogoutHandler }) => {
 
     // GET HASHSET AND CHECK IF Quiz Room Key EXISTS IN Quiz Room Key SET; ELSE ERROR MESSAGE
     if (userName !== "" && quizRoom !== "") {
-      socket.emit("join_quiz_lobby", [userName, quizRoom]); // Add time here
+      socket.emit("join_quiz_lobby", { userName, quizRoom }); // Add time here
       setLobbyUsers((prevUsers) => [userName, ...prevUsers]);
       setShowQuizBox(true);
     }
+  };
+
+  const onExitLobbyHandler = async (errorMessage) => {
+    console.log("EXIT LOBBY CLIENT socket client", errorMessage);
+
+    setShowQuizBox(false);
+    setLobbyFullErrorMessage(errorMessage);
+    window.location.reload();
   };
 
   return (
@@ -52,9 +62,7 @@ const SocketClient = ({ onLogoutHandler }) => {
         <div className="joinQuizRoom">
           <h1>Join Quiz Lobby Now!</h1>
           <hr />
-
           <img src={cat_gif} alt="cat gif" className={styles.image} />
-
           <input
             // className={"joinQuizInputField"}
             className={styles.input}
@@ -79,13 +87,13 @@ const SocketClient = ({ onLogoutHandler }) => {
               event.key === "Enter" && joinLobby();
             }}
           />
-
           <button className={styles.button} onClick={joinLobby}>
             Join Lobby
           </button>
           <button className={styles.button} onClick={onLogoutHandler}>
             Logout
           </button>
+          <h1>{lobbyFullErrorMessage} </h1>
         </div>
       ) : (
         // Call our quiz component and pass in the socket
@@ -98,6 +106,7 @@ const SocketClient = ({ onLogoutHandler }) => {
             quizroom={quizRoom}
             questions={questions}
             lobbyUsernames={lobbyUsers}
+            exitLobbyHandler={onExitLobbyHandler}
           />
         </>
       )}

@@ -14,15 +14,6 @@ const Score = ({ quizroom, username, userscore, questionlength }) => {
   }, []);
 
   const postScore = (e, action) => {
-    const timestamp = {
-      // gets time stamp by hours and minutes
-      time:
-        new Date(Date.now()).getHours() +
-        ":" +
-        new Date(Date.now()).getMinutes() +
-        ":" +
-        new Date(Date.now()).getSeconds(),
-    };
     let url = "http://localhost:5000/api/v1/post_score";
     try {
       Axios.post(url, {
