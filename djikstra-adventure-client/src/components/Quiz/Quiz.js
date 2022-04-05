@@ -5,9 +5,11 @@ import styles from "./QuizQuestions.module.css";
 import Question from "./Question";
 import QuizQuestions from "./QuizQuestions";
 
-const Quiz = ({ socket, username, quizroom, questions, lobbyUsernames }) => {
+const Quiz = ({ socket, username, quizroom, questions, exitLobbyHandler }) => {
   const [showQuizBox, setShowQuizBox] = useState(false);
   const [lobbyUsers, setLobbyUsers] = useState([]);
+
+  const [isRoomFull, setIsRoomFull] = useState(false);
 
   useEffect(() => {
     // Update current user on init load
@@ -41,6 +43,21 @@ const Quiz = ({ socket, username, quizroom, questions, lobbyUsernames }) => {
     setLobbyUsers((prevUsers) => [...prevUsers, username]);
   };
 
+  const exitLobby = async (errorMessage) => {
+    console.log("EXIT LOBBY CLIENT quiz");
+
+    exitLobbyHandler(errorMessage);
+    // window.location.refresh();
+    // socket.disconnect();
+    // socket.emit("disconnect", () => {
+    //   console.log("IN DISCONNECTED EFFECT", lobbyUsers);
+    //   // setLobbyUsers();
+
+    //   // console.log("User deleted: ", id, [...lobbyUsers]);
+    //   // console.log("User deleted, updated users: ", updatedUsers);
+    // });
+  };
+
   // Listens to whenever there is a change in socket server
   useEffect(() => {
     // receive socket await and update users within lobby
@@ -65,9 +82,15 @@ const Quiz = ({ socket, username, quizroom, questions, lobbyUsernames }) => {
     socket.on("disconnected", (updatedUsers) => {
       console.log("IN DISCONNECTED EFFECT", lobbyUsers);
       setLobbyUsers(updatedUsers);
-
       // console.log("User deleted: ", id, [...lobbyUsers]);
       console.log("User deleted, updated users: ", updatedUsers);
+    });
+
+    socket.on("error", (error) => {
+      console.log("SOCKET ERROR CLIENT MESSAGE: ", error.message);
+      // setErrorMessage(error.message);
+      setIsRoomFull(error.error);
+      exitLobby(error.message);
     });
   }, [socket]);
 
@@ -75,21 +98,23 @@ const Quiz = ({ socket, username, quizroom, questions, lobbyUsernames }) => {
     <React.Fragment>
       <div className="quiz-room-window">
         <div className="quiz-room-header-title">
-          {/* {socket.emit("join_quiz_lobby")} */}
+          {/* {socket.emit("join_quiz_room")} */}
           {!showQuizBox && (
             <>
-              <h1 className={styles.header}>
-                {" "}
-                Quiz Room Lobby for {quizroom}{" "}
-              </h1>
+              <h1 className={styles.header}>Quiz Room Lobby for {quizroom}</h1>
               <h1>
                 Users In Lobby:
                 {lobbyUsers.map(({ username, userID }) => {
-                  console.log({ userID });
+                  console.log({ userID, username });
                   return <ul key={userID}> USER: {username}</ul>;
                 })}
               </h1>
-              <button onClick={startGame}>Start Game!</button>
+              <button onClick={startGame} className={styles.button}>
+                Start Game!
+              </button>
+              <button onClick={exitLobby} className={styles.button}>
+                Exit Lobby
+              </button>
             </>
           )}
           {showQuizBox && (

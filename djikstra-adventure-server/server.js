@@ -136,7 +136,7 @@ const MOMENT = require("moment");
 
 app.post("/api/v1/post_score", async (req, res) => {
   console.log("POST REQUEST RECEIVED: /api/v1/post_score");
-  let scoreID = 100;
+  // let scoreID = 100;
   const { quizroom, username, userscore, questionlength } = req.body;
   console.log("Score: ", quizroom, username, userscore, questionlength);
   let datetime = MOMENT().format("YYYY-MM-DD  HH:mm:ss.000");
@@ -160,6 +160,8 @@ app.post("/api/v1/post_score", async (req, res) => {
     }
   );
 });
+
+app.get("/api/v1/get_scores", async (req, res) => {});
 
 app.post("/AccountStats", async (req, res) => {
   let { FK_UserID, Login, day } = req.body;
