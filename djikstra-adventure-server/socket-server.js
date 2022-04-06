@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const { v4: uuidv4 } = require("uuid");
 
 // const port = process.env.PORT || 5001; // localhost 5001
 const port = 5001; // localhost 5001
@@ -130,7 +131,9 @@ io.on("connection", (socket) => {
 
   socket.on("send_start_game", (data) => {
     console.log("SOCKET - In send_start_game: ", data);
-    io.sockets.to(data.quizroom).emit("receive_start_game", data.start);
+    const startGameData = { start: data.start, gameID: uuidv4() };
+    console.log("send_start_game, startGameData: ", startGameData);
+    io.sockets.to(data.quizroom).emit("receive_start_game", startGameData);
   });
   // listens for message data to be emitted from client side (quiz.js) / creates event send_message
   socket.on("send_users", (data) => {

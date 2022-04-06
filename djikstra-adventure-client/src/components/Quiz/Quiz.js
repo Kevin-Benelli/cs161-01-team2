@@ -10,6 +10,7 @@ const Quiz = ({ socket, username, quizroom, questions, exitLobbyHandler }) => {
   const [lobbyUsers, setLobbyUsers] = useState([]);
 
   const [isRoomFull, setIsRoomFull] = useState(false);
+  const [gameID, setGameId] = useState("");
 
   useEffect(() => {
     // Update current user on init load
@@ -76,7 +77,8 @@ const Quiz = ({ socket, username, quizroom, questions, exitLobbyHandler }) => {
     // receive socket await signal for all parties within lobby after a users clicks start game
     socket.on("receive_start_game", (data) => {
       console.log("IN START GAME USE EFFECT:", data);
-      setShowQuizBox(true);
+      setGameId(data.gameID); // gives uuid for game
+      setShowQuizBox(data.start); // true value
     });
 
     socket.on("disconnected", (updatedUsers) => {
@@ -123,6 +125,7 @@ const Quiz = ({ socket, username, quizroom, questions, exitLobbyHandler }) => {
               username={username}
               quizroom={quizroom}
               questions={questions}
+              gameID={gameID}
             />
           )}
           <hr />

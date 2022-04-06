@@ -4,13 +4,13 @@ import styles from "./QuizQuestions.module.css";
 import Question from "./Question";
 import Score from "../Score/Score";
 
-const QuizQuestions = ({ socket, username, quizroom, questions }) => {
+const QuizQuestions = ({ socket, username, quizroom, questions, gameID }) => {
   // const [selectedAnswer, setSelectedAnswer] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userScore, setUserScore] = useState(0);
   const [displayScore, setDisplayScore] = useState(false);
-  const timeLimit = 20;
+  const timeLimit = 5;
 
   const questionsInterval = useRef();
   const [questionData, setQuestionData] = useState(questions);
@@ -113,6 +113,7 @@ const QuizQuestions = ({ socket, username, quizroom, questions }) => {
             username={username}
             userscore={userScore}
             questionlength={questionData.length}
+            gameID={gameID}
           />
         ) : currentQuestion === questionData.length ? null : (
           <div className={styles.answers}>

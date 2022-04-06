@@ -3,13 +3,15 @@ import styles from "./Score.module.css";
 import Axios from "axios";
 import { View, Link } from "react-router-dom";
 
-const Score = ({ quizroom, username, userscore, questionlength }) => {
+const Score = ({ quizroom, username, userscore, questionlength, gameID }) => {
   const [scoreResponse, setScoreResponse] = useState("");
-  const [showGameStats, setGameStates] = useState(false);
+  const [displayGameStats, setDisplayGameStats] = useState(false);
+  const [scoreStats, setScoreStats] = useState([]);
 
   Axios.defaults.withCredentials = true;
 
   useEffect(() => {
+    console.log("init value: ", gameID);
     postScore();
   }, []);
 
@@ -21,6 +23,7 @@ const Score = ({ quizroom, username, userscore, questionlength }) => {
         username,
         userscore,
         questionlength,
+        gameID,
       }).then((response) => {
         console.log(
           "client response:",
@@ -42,13 +45,21 @@ const Score = ({ quizroom, username, userscore, questionlength }) => {
   };
 
   const getScores = (e) => {
+    console.log("get scores client: ", gameID);
     console.log(e);
-    const url = "http://localhost:5000/api/v1/get_scores";
+    // const url = `http://localhost:5000/api/v1/get_scores?gameID=${gameID}`;
+    const url = "http://localhost:5000/api/v1/get_scores/" + gameID;
     try {
       Axios.get(url).then((response) => {
         console.log("GET SCORE REQUEST: ", response.data);
+        console.log("RESPONSE DATA: ", response.data.result);
+        setDisplayGameStats(!response.error);
+        setScoreStats(() => [...response.data.result]);
       });
     } catch (error) {
+      console.log("getScores Error: ", error);
+      setDisplayGameStats(false);
+      // setScoreStats(() => [...response.data.result]);
       console.log("GET REQUEST ERROR: ", error);
     }
   };
@@ -58,17 +69,39 @@ const Score = ({ quizroom, username, userscore, questionlength }) => {
   };
   return (
     <>
-      <span className={styles.score}>
-        {username} Scored: {userscore} / {questionlength}
-      </span>
-      <br />
-      <button className={styles.button} onClick={getScores}>
-        Game Statistics
-      </button>
+      {!displayGameStats ? (
+        <>
+          <span className={styles.score}>
+            {username} Scored: {userscore} / {questionlength}
+          </span>
+          <br />
+          <button className={styles.button} onClick={getScores}>
+            Game Statistics
+          </button>
 
-      <button className={styles.button} onClick={refreshPage}>
-        Return To Lobby
-      </button>
+          <button className={styles.button} onClick={refreshPage}>
+            Return To Lobby
+          </button>
+        </>
+      ) : (
+        <>
+          <div className={styles.center_ol}>
+            <ol className={styles.ol}>
+              {scoreStats.map((userScore) => {
+                return (
+                  <li className={styles.li}>
+                    {userScore.username} {userScore.userscore} /{" "}
+                    {userScore.questionlength}
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+          <button className={styles.button} onClick={refreshPage}>
+            Return To Lobby
+          </button>
+        </>
+      )}
     </>
   );
 };
