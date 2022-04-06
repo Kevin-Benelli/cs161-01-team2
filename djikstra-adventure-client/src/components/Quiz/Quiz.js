@@ -114,7 +114,7 @@ const Quiz = ({ socket, username, quizroom, questions, exitLobbyHandler }) => {
               </button>
             </>
           )}
-          {showQuizBox && gameID && (
+          {showQuizBox && (
             <QuizQuestions
               socket={socket}
               username={username}
