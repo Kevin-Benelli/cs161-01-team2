@@ -162,9 +162,8 @@ app.post("/api/v1/post_score", async (req, res) => {
 });
 
 app.get("/api/v1/get_scores/:gameID", async (req, res) => {
-  console.log("GET SCORE REQUEST: ", gameID);
   const { gameID } = req.params;
-
+  console.log("GET SCORE REQUEST: ", gameID);
   const sql =
     "SELECT room, username, userscore, questionlength FROM Website.scores WHERE gameID = ? ORDER BY userscore DESC";
   db.query(sql, [gameID], (err, result) => {
