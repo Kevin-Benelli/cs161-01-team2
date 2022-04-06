@@ -1,0 +1,19 @@
+.play_button {
+  height: 4vh;
+  margin: 5px;
+  width: 20vw;
+  border-radius: 10px;
+  padding: 5px;
+  font-size: 2vh;
+  background: rgb(71, 172, 109);
+  color: #fff;
+  cursor: pointer;
+  border: none;
+}
+
+.play_button:active {
+  transform: scale(0.98);
+  /* Scaling button to 0.98 to its original size */
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+  /* Lowering the shadow */
+} /* Active Sytle credits: https://www.geeksforgeeks.org/how-to-add-a-pressed-effect-on-button-click-in-css/ */

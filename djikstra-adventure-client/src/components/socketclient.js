@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Quiz from "./Quiz/Quiz";
 import cat_gif from "../images/cs_cat.gif";
 import styles from "./SocketClient.module.css";
+import AudioPlayer from "./AudioPlayer.js";
 
 const ENDPOINT = "http://localhost:5001";
 const socket = io(ENDPOINT);
@@ -57,6 +58,7 @@ const SocketClient = ({ onLogoutHandler }) => {
 
   return (
     <div className={styles.center}>
+      <AudioPlayer />
       {/* If quiz box is not displayed show enter quiz room; else show quiz box */}
       {!showQuizBox && !isLoading ? (
         <div className="joinQuizRoom">
