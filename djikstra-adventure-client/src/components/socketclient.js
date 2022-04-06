@@ -36,6 +36,16 @@ const SocketClient = ({ onLogoutHandler }) => {
     setIsLoading(false);
   }, []);
 
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      console.log("in identifer effect", userName, quizRoom);
+    }, 500);
+
+    return () => {
+      console.log("Debounce CLEANUP");
+      clearTimeout(identifier);
+    };
+  }, [userName, quizRoom]);
   // function emit socket event to join lobby.
   const joinLobby = async () => {
     console.log("joinLobby clicked");
@@ -58,7 +68,6 @@ const SocketClient = ({ onLogoutHandler }) => {
 
   return (
     <div className={styles.center}>
-      <AudioPlayer />
       {/* If quiz box is not displayed show enter quiz room; else show quiz box */}
       {!showQuizBox && !isLoading ? (
         <div className="joinQuizRoom">
@@ -72,7 +81,7 @@ const SocketClient = ({ onLogoutHandler }) => {
             placeholder="Enter Name"
             onChange={(event) => {
               setUsername(event.target.value.toUpperCase());
-              console.log(event.target.value.toUpperCase());
+              // console.log(event.target.value.toUpperCase());
             }}
           />
           <input
@@ -110,6 +119,7 @@ const SocketClient = ({ onLogoutHandler }) => {
             lobbyUsernames={lobbyUsers}
             exitLobbyHandler={onExitLobbyHandler}
           />
+          <AudioPlayer />
         </>
       )}
     </div>

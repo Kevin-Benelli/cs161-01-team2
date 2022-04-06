@@ -32,7 +32,12 @@ const QuizQuestions = ({ socket, username, quizroom, questions, gameID }) => {
 
   useEffect(() => {
     if (time === 0) {
-      if (userAnswer === correctAnswer) {
+      console.log("TIME ZERO: ", time, userAnswer, correctAnswer);
+      if (
+        userAnswer !== "" &&
+        correctAnswer !== "" &&
+        userAnswer === correctAnswer
+      ) {
         setUserScore(userScore + 1); // increment score if correct
       }
 
