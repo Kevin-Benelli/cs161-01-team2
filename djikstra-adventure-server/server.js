@@ -137,13 +137,13 @@ const MOMENT = require("moment");
 app.post("/api/v1/post_score", async (req, res) => {
   console.log("POST REQUEST RECEIVED: /api/v1/post_score");
   // let scoreID = 100;
-  const { quizroom, username, userscore, questionlength } = req.body;
-  console.log("Score: ", quizroom, username, userscore, questionlength);
+  const { quizroom, username, userscore, questionlength, gameID } = req.body;
+  console.log("Score: ", quizroom, username, userscore, questionlength, gameID);
   let datetime = MOMENT().format("YYYY-MM-DD  HH:mm:ss.000");
 
   db.query(
-    "INSERT INTO scores (room, username, userscore, questionlength, timestamp) VALUES (?,?,?,?,?)",
-    [quizroom, username, userscore, questionlength, datetime],
+    "INSERT INTO scores (room, username, userscore, questionlength, gameID, timestamp) VALUES (?,?,?,?,?,?)",
+    [quizroom, username, userscore, questionlength, gameID, datetime],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -161,7 +161,29 @@ app.post("/api/v1/post_score", async (req, res) => {
   );
 });
 
-app.get("/api/v1/get_scores", async (req, res) => {});
+app.get("/api/v1/get_scores/:gameID", async (req, res) => {
+  console.log("GET SCORE REQUEST: ", gameID);
+  const { gameID } = req.params;
+
+  const sql =
+    "SELECT room, username, userscore, questionlength FROM Website.scores WHERE gameID = ? ORDER BY userscore DESC";
+  db.query(sql, [gameID], (err, result) => {
+    if (err) {
+      console.log("Get Game Stats Error: ", err);
+      res.send({
+        message: "Error getting game stats for gameID: " + gameID,
+        error: true,
+      });
+    } else {
+      console.log("Game Stat Results: ", result);
+      res.send({
+        result: result,
+        message: "Get game stats success!",
+        error: false,
+      });
+    }
+  });
+});
 
 app.post("/AccountStats", async (req, res) => {
   let { FK_UserID, Login, day } = req.body;

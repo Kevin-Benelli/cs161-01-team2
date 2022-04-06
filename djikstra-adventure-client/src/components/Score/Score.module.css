@@ -26,3 +26,17 @@
 .button:active {
   background-color: aquamarine;
 }
+
+.ol {
+  text-align: center;
+}
+.li {
+  text-align: center;
+  margin-bottom: 3vh;
+}
+
+.center_ol {
+  text-align: center;
+  font-size: 5vh;
+  list-style-position: inside;
+}
