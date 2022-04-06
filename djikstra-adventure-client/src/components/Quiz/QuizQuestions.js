@@ -10,7 +10,10 @@ const QuizQuestions = ({ socket, username, quizroom, questions, gameID }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userScore, setUserScore] = useState(0);
   const [displayScore, setDisplayScore] = useState(false);
-  const timeLimit = 20;
+  const timeLimit = 5;
+
+  const [correctAnswer, setCorrectAnswer] = useState("");
+  const [userAnswer, setUserAnswer] = useState("");
 
   const questionsInterval = useRef();
   const [questionData, setQuestionData] = useState(questions);
@@ -28,7 +31,14 @@ const QuizQuestions = ({ socket, username, quizroom, questions, gameID }) => {
   }, [questionData]);
 
   useEffect(() => {
-    if (time === 0) setTimer(timeLimit);
+    if (time === 0) {
+      if (userAnswer === correctAnswer) {
+        setUserScore(userScore + 1); // increment score if correct
+      }
+
+      setTimer(timeLimit);
+      // @TODO: post selected question to db
+    }
   }, [time]);
 
   useEffect(() => {
@@ -54,26 +64,14 @@ const QuizQuestions = ({ socket, username, quizroom, questions, gameID }) => {
     console.log("Answer passed in:", userAnswer);
     console.log("Correct Answer: ", correctAnswer);
 
+    setUserAnswer(userAnswer);
+    setCorrectAnswer(correctAnswer);
     setIsCorrect(userAnswer === correctAnswer);
 
-    if (userAnswer === correctAnswer) {
-      setUserScore(userScore + 1);
-    }
-
-    // const nextQuestion = currentQuestion + 1;
-    // // console.log("nexxxxt: ", nextQuestion, questions.length);
-    // // If the index is less than the total questions continue displaying
-    // if (nextQuestion < questions.length) {
-    //   setCurrentQuestion(nextQuestion);
-    // } else {
-    //   setDisplayScore(true);
-    // }
-    // setSelectedAnswer(selectedAnswer);
-
     console.log("Correct Answer? - ", userAnswer === correctAnswer);
-    console.log("");
-    // messageData provides more details about answer submission
-    const messageData = {
+
+    // answerData provides more details about answer submission
+    const answerData = {
       quizroom: quizroom, // stores specific quizroom
       user: username, // maps message to user name
       // selectedAnswer: userAnswer === correctAnswer, // sets messsage to message drafted
@@ -92,10 +90,7 @@ const QuizQuestions = ({ socket, username, quizroom, questions, gameID }) => {
 
     // Wait for message to be sent before continuing to move forward so make it asyncronous
     // emits message data object to messaging server
-    await socket.emit("send_message", messageData);
-
-    // // When we send a message we store our message in the quiz log
-    // setMessageLog((prevMessageLog) => [...prevMessageLog, messageData]);
+    await socket.emit("send_answer_data", answerData);
   };
 
   return (
