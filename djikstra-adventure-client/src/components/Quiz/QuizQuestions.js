@@ -41,6 +41,8 @@ const QuizQuestions = ({ socket, username, quizroom, questions, gameID }) => {
         setUserScore(userScore + 1); // increment score if correct
       }
 
+      setUserAnswer("");
+      setCorrectAnswer("");
       setTimer(timeLimit);
       // @TODO: post selected question to db
     }
