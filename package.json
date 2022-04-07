@@ -4,6 +4,6 @@
     "server": "cd api && nodemon socket-server.js && nodemon server.js",
     "dev": "concurrently --kill-others-on-fail \"npm run api\" \"npm run client\"",
     "heroku-postbuild": "cd client && npm install && npm run build",
-    "build": "webpack"
+    
   }
 }
