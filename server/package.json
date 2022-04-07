@@ -2,10 +2,10 @@
   "name": "djikstra-adventure-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "socket-server.js",
   "scripts": {
-    "start": "inode index",
-    "dev": "nodemon index",
+    "start": "nodemon socket-server",
+    "dev": "nodemon socket-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
