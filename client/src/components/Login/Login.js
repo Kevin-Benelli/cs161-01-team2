@@ -103,7 +103,7 @@ const Login = () => {
           <br></br>
           <br></br>
 
-          <label for="username">
+          <label>
             <b>Username</b>
           </label>
           <br></br>
@@ -122,7 +122,7 @@ const Login = () => {
             }}
           />
           <br></br>
-          <label for="password">
+          <label>
             <b>Password</b>
           </label>
           <i className="bi bi-eye-slash" id="togglePassword"></i>
