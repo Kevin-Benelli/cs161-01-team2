@@ -1,0 +1,522 @@
+{
+	"info": {
+		"_postman_id": "34ef8e24-b009-432b-b29c-2570148410ab",
+		"name": "Kahoot",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Scores",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/get_scores/username",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"get_scores",
+						"username"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users Account Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/users/username",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"users",
+						"username"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Login Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/usersLoginData/username",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"usersLoginData",
+						"username"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Game Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/GameData/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"GameData",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Player Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/PlayerData/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"PlayerData",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Questions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/Questions/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"Questions",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"username\",\"password\":\"pass\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/post_create_account",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"post_create_account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"username\",\"password\":\"pass\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/post_login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"post_login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Score",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"quizroom\" : \"1\" , \"username\" : \"username\", \"userscore\" : \"3\", \"questionlength\" : \"2\" }\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/post_score",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"post_score"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Account Stats",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"FK_User\":\"username\", \"Login\":\"23:00:00\", \"day\":\"2022-04-08\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/AccountStats",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"AccountStats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Game Info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"GameID\":\"1\", \"DateOfGame\":\"2022-04-08\", \"TitleOfGame\":\"Game One\", \"NumberOfPlayers\" :\"4\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/GameInfo",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"GameInfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Player Info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"FK_GameID\": \"1\", \"FK_Username\":\"username\", \"Score\":\"3\", \"Place\":\"1\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/PlayerInfo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"PlayerInfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Questions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"Category\":\"CS\", \"QuestionInfo\":\"What Data Structure has O(1) Access,Hashmap,Hashmap,Array,LinkedList,Stack,0, What has an O(log(n)) worst case space complexity,Quicksort,Mergesort,Quicksort,Heapsort,Radix Sort,1, What is the insertion time of a AVL Tree,O(log(n)),O(1),O(n),O(log(n)),O(n^2),2, Level order Traversal of a rooted Tree can be done by starting from root and performing: ,Breadth First Search,Breadth First Search,Depth First Search, Root Search,Deep Search,3, Which of the following is not a stable sorting algorithm in its typical implementation.,Quick Sort,Insertion Sort,Merge Sort,Quick Sort,Bubble Sort,4, What is the best time complexity of bubble sort?,N,N^2,NlogN,N,N(logN)^2,5, Which one of the following in place sorting algorithms needs the minimum number of swaps?,Selection sort,Quick sort,Insertion sort,Selection sort,Heap sort,6, Which of the following sorting algorithms can be used to sort a random linked list with minimum time complexity?,Merge sort,Insertion sort,Quick sort,Heap sort,Merge sort,7, The best data structure to check whether an arithmetic expression has balanced parenthesis is a ,Stack,Queue,Stack,Tree,List,8, A full binary tree with n leaves contains: ,2n-1 nodes,n nodes,log(n) nodes,2n-1 nodes,2^n nodes,9, Which of the following traversal outputs the data in sorted order in a BST?,Inorder,Preorder,Inorder,Postorder Level order,10, Which of the following data structure is useful in traversing a given graph by breadth first search?,Queue,Stack,List,Queue,None of the above,11, Which data structure is most efficient to find the top 10 largest items out of 1 million items stored in file?,Min heap,Min heap,Max heap,BST,Sorted array,12, In a binary max heap containing n numbers, the smallest element can be found in time ,O(n),O(n),O(logn),O(loglog(n)),O(1),13, Which traversal of tree resembles the breadth first search of the graph?,Level order,Preorder,Inorder,Postorder,Level order,14, The minimum number of stacks needed to implement a queue is ,2,3,1,2,4,15, How many queues are needed to implement a stack. Consider the situation where no other data structure like arrays, linked list is available to you.,2,1,2,3,4,16, Which of the following algorithms sort n integers, having the range 0 to (n^2 - 1), in ascending order in O(n) time?,Radix sort,Selection sort,Bubble sort,Radix sort,Insertion sort,17, Which of the following algorithm design technique is used in merge sort?,Divide and Conquer,Greedy method,Backtracking,Dynamic programming,Divide and Conquer, 18, Selection sort algorithm design technique is an example of ,Greedy method,Greedy method,Divide and Conquer,Dynamic programming,Backtracking,19,\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/Questions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"Questions"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
