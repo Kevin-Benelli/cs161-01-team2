@@ -53,6 +53,176 @@ app.get("/api/v1/quiz", cors(), async (req, res) => {
         answer4: "O(n^2)",
         index: 2,
       },
+
+      {
+        question: "Level order Traversal of a rooted Tree can be done by starting from root and performing: ",
+        correctAnswer: "Breadth First Search",
+        answer1: "Breadth First Search",
+        answer2: "Depth First Search",
+        answer3: "Root Search",
+        answer4: "Deep Search",
+        index: 3,
+      },
+
+      {
+        question: "Which of the following is not a stable sorting algorithm in its typical implementation.",
+        correctAnswer: "Quick Sort",
+        answer1: "Insertion Sort",
+        answer2: "Merge Sort",
+        answer3: "Quick Sort",
+        answer4: "Bubble Sort",
+        index: 4,
+      },
+
+      {
+        question: "What is the best time complexity of bubble sort?",
+        correctAnswer: "N",
+        answer1: "N^2",
+        answer2: "NlogN",
+        answer3: "N",
+        answer4: "N(logN)^2",
+        index: 5,
+      },
+
+      {
+        question: "Which one of the following in place sorting algorithms needs the minimum number of swaps?",
+        correctAnswer: "Selection sort",
+        answer1: "Quick sort",
+        answer2: "Insertion sort",
+        answer3: "Selection sort",
+        answer4: "Heap sort",
+        index: 6,
+      },
+
+      {
+        question: "Which of the following sorting algorithms can be used to sort a random linked list with minimum time complexity?",
+        correctAnswer: "Merge sort",
+        answer1: "Insertion sort",
+        answer2: "Quick sort",
+        answer3: "Heap sort",
+        answer4: "Merge sort",
+        index: 7,
+      },
+
+      {
+        question: "The best data structure to check whether an arithmetic expression has balanced parenthesis is a ",
+        correctAnswer: "Stack",
+        answer1: "Queue",
+        answer2: "Stack",
+        answer3: "Tree",
+        answer4: "List",
+        index: 8,
+      },
+
+      {
+        question: "A full binary tree with n leaves contains: ",
+        correctAnswer: "2n-1 nodes",
+        answer1: "n nodes",
+        answer2: "log(n) nodes",
+        answer3: "2n-1 nodes",
+        answer4: "2^n nodes",
+        index: 9,
+      },
+
+      {
+        question: "Which of the following traversal outputs the data in sorted order in a BST?",
+        correctAnswer: "Inorder",
+        answer1: "Preorder",
+        answer2: "Inorder",
+        answer3: "Postorder",
+        answer4: "Level order",
+        index: 10,
+      },
+
+      {
+        question: "Which of the following data structure is useful in traversing a given graph by breadth first search?",
+        correctAnswer: "Queue",
+        answer1: "Stack",
+        answer2: "List",
+        answer3: "Queue",
+        answer4: "None of the above",
+        index: 11,
+      },
+
+      {
+        question: "Which data structure is most efficient to find the top 10 largest items out of 1 million items stored in file?",
+        correctAnswer: "Min heap",
+        answer1: "Min heap",
+        answer2: "Max heap",
+        answer3: "BST",
+        answer4: "Sorted array",
+        index: 12,
+      },
+
+      {
+        question: "In a binary max heap containing n numbers, the smallest element can be found in time ",
+        correctAnswer: "O(n)",
+        answer1: "O(n)",
+        answer2: "O(logn)",
+        answer3: "O(loglog(n))",
+        answer4: "O(1)",
+        index: 13,
+      },
+
+      {
+        question: "Which traversal of tree resembles the breadth first search of the graph?",
+        correctAnswer: "Level order",
+        answer1: "Preorder",
+        answer2: "Inorder",
+        answer3: "Postorder",
+        answer4: "Level order",
+        index: 14,
+      },
+
+      {
+        question: "The minimum number of stacks needed to implement a queue is ",
+        correctAnswer: "2",
+        answer1: "3",
+        answer2: "1",
+        answer3: "2",
+        answer4: "4",
+        index: 15,
+      },
+
+      {
+        question: "How many queues are needed to implement a stack. Consider the situation where no other data structure like arrays, linked list is available to you.",
+        correctAnswer: "2",
+        answer1: "1",
+        answer2: "2",
+        answer3: "3",
+        answer4: "4",
+        index: 16,
+      },
+
+      {
+        question: "Which of the following algorithms sort n integers, having the range 0 to (n^2 - 1), in ascending order in O(n) time?",
+        correctAnswer: "Radix sort",
+        answer1: "Selection sort",
+        answer2: "Bubble sort",
+        answer3: "Radix sort",
+        answer4: "Insertion sort",
+        index: 17,
+      },
+
+      {
+        question: "Which of the following algorithm design technique is used in merge sort?",
+        correctAnswer: "Divide and Conquer",
+        answer1: "Greedy method",
+        answer2: "Backtracking",
+        answer3: "Dynamic programming",
+        answer4: "Divide and Conquer",
+        index: 18,
+      },
+
+      {
+        question: "Selection sort algorithm design technique is an example of ",
+        correctAnswer: "Greedy method",
+        answer1: "Greedy method",
+        answer2: "Divide and Conquer",
+        answer3: "Dynamic programming",
+        answer4: "Backtracking",
+        index: 19,
+      },
     ],
   });
 });

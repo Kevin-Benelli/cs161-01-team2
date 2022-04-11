@@ -52,6 +52,8 @@ const db = mysql.createConnection({
   database: "Website",
 });
 
+
+// tested
 app.post("/post_create_account", (req, res) => {
   const { username, password } = req.body;
 
@@ -85,6 +87,7 @@ app.post("/post_create_account", (req, res) => {
   });
 });
 
+// tested
 app.post("/post_login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -134,16 +137,17 @@ app.post("/post_login", async (req, res) => {
 });
 const MOMENT = require("moment");
 
+// tested 
 app.post("/api/v1/post_score", async (req, res) => {
   console.log("POST REQUEST RECEIVED: /api/v1/post_score");
   // let scoreID = 100;
-  const { quizroom, username, userscore, questionlength, gameID } = req.body;
-  console.log("Score: ", quizroom, username, userscore, questionlength, gameID);
+  const { quizroom, username, userscore, questionlength } = req.body;
+  console.log("Score: ", quizroom, username, userscore, questionlength);
   let datetime = MOMENT().format("YYYY-MM-DD  HH:mm:ss.000");
 
   db.query(
-    "INSERT INTO scores (room, username, userscore, questionlength, gameID, timestamp) VALUES (?,?,?,?,?,?)",
-    [quizroom, username, userscore, questionlength, gameID, datetime],
+    "INSERT INTO scores (room, username, userscore, questionlength, timestamp) VALUES (?,?,?,?,?)",
+    [quizroom, username, userscore, questionlength, datetime],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -161,39 +165,49 @@ app.post("/api/v1/post_score", async (req, res) => {
   );
 });
 
-app.get("/api/v1/get_scores/:gameID", async (req, res) => {
-  const { gameID } = req.params;
-  console.log("GET SCORE REQUEST: ", gameID);
-  const sql =
-    "SELECT room, username, userscore, questionlength FROM Website.scores WHERE gameID = ? ORDER BY userscore DESC";
-  db.query(sql, [gameID], (err, result) => {
-    if (err) {
-      console.log("Get Game Stats Error: ", err);
-      res.send({
-        message: "Error getting game stats for gameID: " + gameID,
-        error: true,
-      });
-    } else {
-      console.log("Game Stat Results: ", result);
-      res.send({
-        result: result,
-        message: "Get game stats success!",
-        error: false,
-      });
-    }
-  });
-});
+//tested
+app.get("/api/v1/get_scores/:username", async (req, res) => {
+let username = req.params['username'];
 
+  const query = `SELECT * FROM scores WHERE username = ?`;
+  try{
+    db.query(query, username, (err, result) => {
+      if (result.length == 0) {
+        res.sendStatus(404);
+      }
+      else{
+        console.log(result);
+        let result_accounts = [];
+        for(let i = 0; i < result.length; i++){
+          result_accounts.push(result[i]);
+        }
+        res.json({
+            "status": "success",
+            "data": {
+	      "Account"  : result_accounts
+            }
+          }
+        );
+      }
+    });
+  }
+  catch (err){
+    console.log(err);
+    res.sendStatus(500);
+  }
+})
+
+//tested
 app.post("/AccountStats", async (req, res) => {
-  let { FK_UserID, Login, day } = req.body;
+  let { FK_User, Login, day } = req.body;
 
   console.log("/AccountStats");
 
   console.log("Express received: ", req.body);
 
   db.query(
-    "INSERT INTO UserLogin (FK_UserID, Login, day) VALUES (?,?,?)",
-    [FK_UserID, Login, day],
+    "INSERT INTO UserLogin (FK_User, Login, day) VALUES (?,?,?)",
+    [FK_User, Login, day],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -211,19 +225,282 @@ app.post("/AccountStats", async (req, res) => {
   );
 });
 
-// db.connect(function (err) {
-//   db.query("SELECT * FROM UserLogin", function (err, result, fields) {
-//     if (err) throw err;
-//     console.log(result);
-//   });
-// });
+//tested
+app.post("/GameInfo", async (req, res) => {
+  let { GameID , DateOfGame, TitleOfGame, NumberOfPlayers } = req.body;
 
-// db.connect(function (err) {
-//   db.query("SELECT * FROM User", function (err, result, fields) {
-//     if (err) throw err;
-//     console.log(result);
-//   });
-// });
+  console.log("/GameInfo");
+
+  console.log("Express received: ", req.body);
+
+  db.query(
+    "INSERT INTO Game(GameID, DateOfGame, TitleOfGame, NumberOfPlayers) VALUES (?,?,?,?)",
+    [GameID, DateOfGame, TitleOfGame, NumberOfPlayers],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.send({
+          message: "Game data failed to save",
+          error: true,
+        });
+      } else {
+        res.send({
+          message: "Game data saved",
+          error: false,
+        });
+      }
+    }
+  );
+});
+
+
+// tested
+app.post("/PlayerInfo", async (req, res) => {
+  let { FK_GameID, FK_Username, Score, Place } = req.body;
+
+  console.log("/PlayerInfo");
+
+  console.log("Express received: ", req.body);
+
+  db.query(
+    "INSERT INTO Player(FK_GameID, FK_Username, Score, Place) VALUES (?,?,?,?)",
+    [FK_GameID, FK_Username, Score, Place],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.send({
+          message: "Player data failed to save",
+          error: true,
+        });
+      } else {
+        res.send({
+          message: "Player data saved",
+          error: false,
+        });
+      }
+    }
+  );
+});
+
+
+// Returns the users account data, tested
+app.get("/users/:username", async(req, res) => {
+  let username = req.params['username'];
+
+  const query = `SELECT * FROM users WHERE username = ?`;
+  try{
+    db.query(query, username, (err, result) => {
+      if (result.length == 0) {
+        res.sendStatus(404);
+      }
+      else{
+        console.log(result);
+        let result_accounts = [];
+        for(let i = 0; i < result.length; i++){
+          result_accounts.push(result[i]);
+        }
+        res.json({
+            "status": "success",
+            "data": {
+	      "Account"  : result_accounts
+            }
+          }
+        );
+      }
+    });
+  }
+  catch (err){
+    console.log(err);
+    res.sendStatus(500);
+  }
+})
+
+// Returns the users login data, tested
+app.get("/usersLoginData/:FK_User", async(req, res) => {
+  let FK_User = req.params['FK_User'];
+
+  const query = `SELECT * FROM UserLogin WHERE FK_User = ?`;
+  try{
+    db.query(query, FK_User, (err, result) => {
+      if (result.length == 0) {
+        res.sendStatus(404);
+      }
+      else{
+        console.log(result);
+       let result_accounts = [];
+        for(let i = 0; i < result.length; i++){
+          result_accounts.push(result[i]);
+        }
+        res.json({
+            "status": "success",
+            "data": {
+	      "AccountLoginData": result_accounts
+            }
+          }
+        );
+      }
+    });
+  }
+  catch (err){
+    console.log(err);
+    res.sendStatus(500);
+  }
+})
+
+// Returns the games data, tested
+app.get("/GameData/:GameID", async(req, res) => {
+  let GameID = req.params['GameID'];
+
+  const query = `SELECT * FROM Game WHERE GameID = ?`;
+  try{
+    db.query(query, GameID, (err, result) => {
+      if (result.length == 0) {
+        res.sendStatus(404);
+      }
+      else{
+        console.log(result);
+        let game_results = [];
+        for(let i = 0; i < result.length; i++){
+          game_results.push(result[i]);
+        }
+        res.json({
+            "status": "success",
+            "data": {  
+              "Game data"  : game_results
+            }
+          }
+        );
+      }
+    });
+  }
+  catch (err){
+    console.log(err);
+    res.sendStatus(500);
+  }
+})
+
+// Returns the users login data, tested
+app.get("/PlayerData/:FK_GameID", async(req, res) => {
+  let FK_GameID= req.params['FK_GameID'];
+
+  const query = `SELECT * FROM Player WHERE FK_GameID = ?`;
+  try{
+    db.query(query, FK_GameID,(err, result) => {
+      if (result.length == 0) {
+        res.sendStatus(404);
+      }
+      else{
+        console.log(result);
+        let result_accounts = [];
+        for(let i = 0; i < result.length; i++){
+          result_accounts.push(result[i]);
+        }
+        res.json({
+            "status": "success",
+            "data": {  
+	      "PlayerData": result_accounts
+            }
+          }
+        );
+      }
+    });
+  }
+  catch (err){
+    console.log(err);
+    res.sendStatus(500);
+  }
+})
+
+// Returns the users account data, tested
+app.get("/users", async(req, res) => {
+
+  const query = `SELECT * FROM users`;
+  try{
+    db.query(query,(err, result) => {
+       if (result.length == 0) {
+         res.sendStatus(404);
+       }
+       else{
+        console.log(result);
+        let result_accounts = [];
+        for(let i = 0; i < result.length; i++){
+          result_accounts.push(result[i]);
+        }
+        res.json({
+            "status": "success",
+            "data": {
+	      "Accounts"  : result_accounts
+            }
+          }
+        );
+      }
+    });
+  }
+  catch (err){
+    console.log(err);
+    res.sendStatus(500);
+  }
+})
+
+app.post("/Questions", async (req, res) => {
+  let { Category, QuestionInfo } = req.body;
+
+  console.log("/PlayerInfo");
+
+  console.log("Express received: ", req.body);
+
+  db.query(
+    "INSERT INTO Questions(Category, QuestionInfo) VALUES (?,?)",
+    [Category, QuestionInfo],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.send({
+          message: "Question data failed to save",
+          error: true,
+        });
+      } else {
+        res.send({
+          message: "Question data saved",
+          error: false,
+        });
+      }
+    }
+  );
+});
+
+app.get("/Questions/:QuestionID", async(req, res) => {
+  let QuestionID = req.params['QuestionID'];
+
+  const query = `SELECT * FROM Questions Where QuestionID = ?`;
+  try{
+    db.query(query, QuestionID,(err, result) => {
+       if (result.length == 0) {
+         res.sendStatus(404);
+       }
+       else{
+        console.log(result);
+        let result_accounts = [];
+        for(let i = 0; i < result.length; i++){
+          result_accounts.push(result[i]);
+        }
+        res.json({
+            "status": "success",
+            "data": {
+	      "Accounts"  : result_accounts
+            }
+          }
+        );
+      }
+    });
+  }
+  catch (err){
+    console.log(err);
+    res.sendStatus(500);
+  }
+})
+
+
 
 app.listen(port, () => {
   console.log("server is workinnn rn", port);
