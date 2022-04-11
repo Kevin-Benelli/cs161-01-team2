@@ -9,7 +9,6 @@ const port = 5001; // localhost 5001
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
-
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -55,7 +54,8 @@ app.get("/api/v1/quiz", cors(), async (req, res) => {
       },
 
       {
-        question: "Level order Traversal of a rooted Tree can be done by starting from root and performing: ",
+        question:
+          "Level order Traversal of a rooted Tree can be done by starting from root and performing: ",
         correctAnswer: "Breadth First Search",
         answer1: "Breadth First Search",
         answer2: "Depth First Search",
@@ -65,7 +65,8 @@ app.get("/api/v1/quiz", cors(), async (req, res) => {
       },
 
       {
-        question: "Which of the following is not a stable sorting algorithm in its typical implementation.",
+        question:
+          "Which of the following is not a stable sorting algorithm in its typical implementation.",
         correctAnswer: "Quick Sort",
         answer1: "Insertion Sort",
         answer2: "Merge Sort",
@@ -85,7 +86,8 @@ app.get("/api/v1/quiz", cors(), async (req, res) => {
       },
 
       {
-        question: "Which one of the following in place sorting algorithms needs the minimum number of swaps?",
+        question:
+          "Which one of the following in place sorting algorithms needs the minimum number of swaps?",
         correctAnswer: "Selection sort",
         answer1: "Quick sort",
         answer2: "Insertion sort",
@@ -95,7 +97,8 @@ app.get("/api/v1/quiz", cors(), async (req, res) => {
       },
 
       {
-        question: "Which of the following sorting algorithms can be used to sort a random linked list with minimum time complexity?",
+        question:
+          "Which of the following sorting algorithms can be used to sort a random linked list with minimum time complexity?",
         correctAnswer: "Merge sort",
         answer1: "Insertion sort",
         answer2: "Quick sort",
@@ -105,7 +108,8 @@ app.get("/api/v1/quiz", cors(), async (req, res) => {
       },
 
       {
-        question: "The best data structure to check whether an arithmetic expression has balanced parenthesis is a ",
+        question:
+          "The best data structure to check whether an arithmetic expression has balanced parenthesis is a ",
         correctAnswer: "Stack",
         answer1: "Queue",
         answer2: "Stack",
@@ -125,7 +129,8 @@ app.get("/api/v1/quiz", cors(), async (req, res) => {
       },
 
       {
-        question: "Which of the following traversal outputs the data in sorted order in a BST?",
+        question:
+          "Which of the following traversal outputs the data in sorted order in a BST?",
         correctAnswer: "Inorder",
         answer1: "Preorder",
         answer2: "Inorder",
@@ -135,7 +140,8 @@ app.get("/api/v1/quiz", cors(), async (req, res) => {
       },
 
       {
-        question: "Which of the following data structure is useful in traversing a given graph by breadth first search?",
+        question:
+          "Which of the following data structure is useful in traversing a given graph by breadth first search?",
         correctAnswer: "Queue",
         answer1: "Stack",
         answer2: "List",
@@ -145,7 +151,8 @@ app.get("/api/v1/quiz", cors(), async (req, res) => {
       },
 
       {
-        question: "Which data structure is most efficient to find the top 10 largest items out of 1 million items stored in file?",
+        question:
+          "Which data structure is most efficient to find the top 10 largest items out of 1 million items stored in file?",
         correctAnswer: "Min heap",
         answer1: "Min heap",
         answer2: "Max heap",
@@ -155,7 +162,8 @@ app.get("/api/v1/quiz", cors(), async (req, res) => {
       },
 
       {
-        question: "In a binary max heap containing n numbers, the smallest element can be found in time ",
+        question:
+          "In a binary max heap containing n numbers, the smallest element can be found in time ",
         correctAnswer: "O(n)",
         answer1: "O(n)",
         answer2: "O(logn)",
@@ -165,7 +173,8 @@ app.get("/api/v1/quiz", cors(), async (req, res) => {
       },
 
       {
-        question: "Which traversal of tree resembles the breadth first search of the graph?",
+        question:
+          "Which traversal of tree resembles the breadth first search of the graph?",
         correctAnswer: "Level order",
         answer1: "Preorder",
         answer2: "Inorder",
@@ -175,7 +184,8 @@ app.get("/api/v1/quiz", cors(), async (req, res) => {
       },
 
       {
-        question: "The minimum number of stacks needed to implement a queue is ",
+        question:
+          "The minimum number of stacks needed to implement a queue is ",
         correctAnswer: "2",
         answer1: "3",
         answer2: "1",
@@ -185,7 +195,8 @@ app.get("/api/v1/quiz", cors(), async (req, res) => {
       },
 
       {
-        question: "How many queues are needed to implement a stack. Consider the situation where no other data structure like arrays, linked list is available to you.",
+        question:
+          "How many queues are needed to implement a stack. Consider the situation where no other data structure like arrays, linked list is available to you.",
         correctAnswer: "2",
         answer1: "1",
         answer2: "2",
@@ -195,7 +206,8 @@ app.get("/api/v1/quiz", cors(), async (req, res) => {
       },
 
       {
-        question: "Which of the following algorithms sort n integers, having the range 0 to (n^2 - 1), in ascending order in O(n) time?",
+        question:
+          "Which of the following algorithms sort n integers, having the range 0 to (n^2 - 1), in ascending order in O(n) time?",
         correctAnswer: "Radix sort",
         answer1: "Selection sort",
         answer2: "Bubble sort",
@@ -205,7 +217,8 @@ app.get("/api/v1/quiz", cors(), async (req, res) => {
       },
 
       {
-        question: "Which of the following algorithm design technique is used in merge sort?",
+        question:
+          "Which of the following algorithm design technique is used in merge sort?",
         correctAnswer: "Divide and Conquer",
         answer1: "Greedy method",
         answer2: "Backtracking",

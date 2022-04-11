@@ -52,7 +52,6 @@ const db = mysql.createConnection({
   database: "Website",
 });
 
-
 // tested
 app.post("/post_create_account", (req, res) => {
   const { username, password } = req.body;
@@ -137,7 +136,7 @@ app.post("/post_login", async (req, res) => {
 });
 const MOMENT = require("moment");
 
-// tested 
+// tested
 app.post("/api/v1/post_score", async (req, res) => {
   console.log("POST REQUEST RECEIVED: /api/v1/post_score");
   // let scoreID = 100;
@@ -167,35 +166,54 @@ app.post("/api/v1/post_score", async (req, res) => {
 
 //tested
 app.get("/api/v1/get_scores/:username", async (req, res) => {
-let username = req.params['username'];
+  let username = req.params["username"];
 
   const query = `SELECT * FROM scores WHERE username = ?`;
-  try{
+  try {
     db.query(query, username, (err, result) => {
       if (result.length == 0) {
         res.sendStatus(404);
-      }
-      else{
+      } else {
         console.log(result);
         let result_accounts = [];
-        for(let i = 0; i < result.length; i++){
+        for (let i = 0; i < result.length; i++) {
           result_accounts.push(result[i]);
         }
         res.json({
-            "status": "success",
-            "data": {
-	      "Account"  : result_accounts
-            }
-          }
-        );
+          status: "success",
+          data: {
+            Account: result_accounts,
+          },
+        });
       }
     });
-  }
-  catch (err){
+  } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
-})
+});
+app.get("/api/v1/get_scores/:gameID", async (req, res) => {
+  const { gameID } = req.params;
+  console.log("GET SCORE REQUEST: ", gameID);
+  const sql =
+    "SELECT room, username, userscore, questionlength FROM Website.scores WHERE gameID = ? ORDER BY userscore DESC";
+  db.query(sql, [gameID], (err, result) => {
+    if (err) {
+      console.log("Get Game Stats Error: ", err);
+      res.send({
+        message: "Error getting game stats for gameID: " + gameID,
+        error: true,
+      });
+    } else {
+      console.log("Game Stat Results: ", result);
+      res.send({
+        result: result, // object of user scores per game
+        message: "Get game stats success!",
+        error: false,
+      });
+    }
+  });
+});
 
 //tested
 app.post("/AccountStats", async (req, res) => {
@@ -227,7 +245,7 @@ app.post("/AccountStats", async (req, res) => {
 
 //tested
 app.post("/GameInfo", async (req, res) => {
-  let { GameID , DateOfGame, TitleOfGame, NumberOfPlayers } = req.body;
+  let { GameID, DateOfGame, TitleOfGame, NumberOfPlayers } = req.body;
 
   console.log("/GameInfo");
 
@@ -252,7 +270,6 @@ app.post("/GameInfo", async (req, res) => {
     }
   );
 });
-
 
 // tested
 app.post("/PlayerInfo", async (req, res) => {
@@ -282,165 +299,148 @@ app.post("/PlayerInfo", async (req, res) => {
   );
 });
 
-
 // Returns the users account data, tested
-app.get("/users/:username", async(req, res) => {
-  let username = req.params['username'];
+app.get("/users/:username", async (req, res) => {
+  let username = req.params["username"];
 
   const query = `SELECT * FROM users WHERE username = ?`;
-  try{
+  try {
     db.query(query, username, (err, result) => {
       if (result.length == 0) {
         res.sendStatus(404);
-      }
-      else{
+      } else {
         console.log(result);
         let result_accounts = [];
-        for(let i = 0; i < result.length; i++){
+        for (let i = 0; i < result.length; i++) {
           result_accounts.push(result[i]);
         }
         res.json({
-            "status": "success",
-            "data": {
-	      "Account"  : result_accounts
-            }
-          }
-        );
+          status: "success",
+          data: {
+            Account: result_accounts,
+          },
+        });
       }
     });
-  }
-  catch (err){
+  } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
-})
+});
 
 // Returns the users login data, tested
-app.get("/usersLoginData/:FK_User", async(req, res) => {
-  let FK_User = req.params['FK_User'];
+app.get("/usersLoginData/:FK_User", async (req, res) => {
+  let FK_User = req.params["FK_User"];
 
   const query = `SELECT * FROM UserLogin WHERE FK_User = ?`;
-  try{
+  try {
     db.query(query, FK_User, (err, result) => {
       if (result.length == 0) {
         res.sendStatus(404);
-      }
-      else{
+      } else {
         console.log(result);
-       let result_accounts = [];
-        for(let i = 0; i < result.length; i++){
+        let result_accounts = [];
+        for (let i = 0; i < result.length; i++) {
           result_accounts.push(result[i]);
         }
         res.json({
-            "status": "success",
-            "data": {
-	      "AccountLoginData": result_accounts
-            }
-          }
-        );
+          status: "success",
+          data: {
+            AccountLoginData: result_accounts,
+          },
+        });
       }
     });
-  }
-  catch (err){
+  } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
-})
+});
 
 // Returns the games data, tested
-app.get("/GameData/:GameID", async(req, res) => {
-  let GameID = req.params['GameID'];
+app.get("/GameData/:GameID", async (req, res) => {
+  let GameID = req.params["GameID"];
 
   const query = `SELECT * FROM Game WHERE GameID = ?`;
-  try{
+  try {
     db.query(query, GameID, (err, result) => {
       if (result.length == 0) {
         res.sendStatus(404);
-      }
-      else{
+      } else {
         console.log(result);
         let game_results = [];
-        for(let i = 0; i < result.length; i++){
+        for (let i = 0; i < result.length; i++) {
           game_results.push(result[i]);
         }
         res.json({
-            "status": "success",
-            "data": {  
-              "Game data"  : game_results
-            }
-          }
-        );
+          status: "success",
+          data: {
+            "Game data": game_results,
+          },
+        });
       }
     });
-  }
-  catch (err){
+  } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
-})
+});
 
 // Returns the users login data, tested
-app.get("/PlayerData/:FK_GameID", async(req, res) => {
-  let FK_GameID= req.params['FK_GameID'];
+app.get("/PlayerData/:FK_GameID", async (req, res) => {
+  let FK_GameID = req.params["FK_GameID"];
 
   const query = `SELECT * FROM Player WHERE FK_GameID = ?`;
-  try{
-    db.query(query, FK_GameID,(err, result) => {
+  try {
+    db.query(query, FK_GameID, (err, result) => {
       if (result.length == 0) {
         res.sendStatus(404);
-      }
-      else{
+      } else {
         console.log(result);
         let result_accounts = [];
-        for(let i = 0; i < result.length; i++){
+        for (let i = 0; i < result.length; i++) {
           result_accounts.push(result[i]);
         }
         res.json({
-            "status": "success",
-            "data": {  
-	      "PlayerData": result_accounts
-            }
-          }
-        );
+          status: "success",
+          data: {
+            PlayerData: result_accounts,
+          },
+        });
       }
     });
-  }
-  catch (err){
+  } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
-})
+});
 
 // Returns the users account data, tested
-app.get("/users", async(req, res) => {
-
+app.get("/users", async (req, res) => {
   const query = `SELECT * FROM users`;
-  try{
-    db.query(query,(err, result) => {
-       if (result.length == 0) {
-         res.sendStatus(404);
-       }
-       else{
+  try {
+    db.query(query, (err, result) => {
+      if (result.length == 0) {
+        res.sendStatus(404);
+      } else {
         console.log(result);
         let result_accounts = [];
-        for(let i = 0; i < result.length; i++){
+        for (let i = 0; i < result.length; i++) {
           result_accounts.push(result[i]);
         }
         res.json({
-            "status": "success",
-            "data": {
-	      "Accounts"  : result_accounts
-            }
-          }
-        );
+          status: "success",
+          data: {
+            Accounts: result_accounts,
+          },
+        });
       }
     });
-  }
-  catch (err){
+  } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
-})
+});
 
 app.post("/Questions", async (req, res) => {
   let { Category, QuestionInfo } = req.body;
@@ -469,38 +469,33 @@ app.post("/Questions", async (req, res) => {
   );
 });
 
-app.get("/Questions/:QuestionID", async(req, res) => {
-  let QuestionID = req.params['QuestionID'];
+app.get("/Questions/:QuestionID", async (req, res) => {
+  let QuestionID = req.params["QuestionID"];
 
   const query = `SELECT * FROM Questions Where QuestionID = ?`;
-  try{
-    db.query(query, QuestionID,(err, result) => {
-       if (result.length == 0) {
-         res.sendStatus(404);
-       }
-       else{
+  try {
+    db.query(query, QuestionID, (err, result) => {
+      if (result.length == 0) {
+        res.sendStatus(404);
+      } else {
         console.log(result);
         let result_accounts = [];
-        for(let i = 0; i < result.length; i++){
+        for (let i = 0; i < result.length; i++) {
           result_accounts.push(result[i]);
         }
         res.json({
-            "status": "success",
-            "data": {
-	      "Accounts"  : result_accounts
-            }
-          }
-        );
+          status: "success",
+          data: {
+            Accounts: result_accounts,
+          },
+        });
       }
     });
-  }
-  catch (err){
+  } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
-})
-
-
+});
 
 app.listen(port, () => {
   console.log("server is workinnn rn", port);
