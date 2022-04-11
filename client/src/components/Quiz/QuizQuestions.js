@@ -10,7 +10,7 @@ const QuizQuestions = ({ socket, username, quizroom, questions, gameID }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userScore, setUserScore] = useState(0);
   const [displayScore, setDisplayScore] = useState(false);
-  const timeLimit = 5;
+  const timeLimit = 10;
 
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [userAnswer, setUserAnswer] = useState("");
