@@ -13,28 +13,28 @@ const SocketClient = ({ onLogoutHandler }) => {
   const [userName, setUsername] = useState("");
   const [quizRoom, setQuizRoom] = useState("");
   const [showQuizBox, setShowQuizBox] = useState(false);
-  const [questions, setQuestions] = useState([]);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [lobbyUsers, setLobbyUsers] = useState([]);
 
   const [lobbyFullErrorMessage, setLobbyFullErrorMessage] = useState("");
 
-  useEffect(() => {
-    setIsLoading(true);
-    const fetchData = async () => {
-      let response = await fetch("http://localhost:5001/api/v1/quiz");
-      const data = await response.json();
-      console.log("here: ", data["questionData"]);
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   const fetchData = async () => {
+  //     let response = await fetch("http://localhost:5001/api/v1/quiz");
+  //     const data = await response.json();
+  //     console.log("here: ", data["questionData"]);
 
-      setQuestions(data["questionData"]);
-    };
-    fetchData().catch((error) => {
-      console.log("Error: ", error);
-    });
+  //     setQuestions(data["questionData"]);
+  //   };
+  //   fetchData().catch((error) => {
+  //     console.log("Error: ", error);
+  //   });
 
-    setIsLoading(false);
-  }, []);
+  //   setIsLoading(false);
+  // }, []);
 
   useEffect(() => {
     const identifier = setTimeout(() => {
@@ -69,7 +69,7 @@ const SocketClient = ({ onLogoutHandler }) => {
   return (
     <div className={styles.center}>
       {/* If quiz box is not displayed show enter quiz room; else show quiz box */}
-      {!showQuizBox && !isLoading ? (
+      {!showQuizBox ? (
         <div className="joinQuizRoom">
           <h1>Join Quiz Lobby Now!</h1>
           <hr />
@@ -115,7 +115,6 @@ const SocketClient = ({ onLogoutHandler }) => {
             socket={socket}
             username={userName}
             quizroom={quizRoom}
-            questions={questions}
             lobbyUsernames={lobbyUsers}
             exitLobbyHandler={onExitLobbyHandler}
           />

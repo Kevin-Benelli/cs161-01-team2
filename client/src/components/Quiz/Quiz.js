@@ -5,12 +5,13 @@ import styles from "./QuizQuestions.module.css";
 import Question from "./Question";
 import QuizQuestions from "./QuizQuestions";
 
-const Quiz = ({ socket, username, quizroom, questions, exitLobbyHandler }) => {
+const Quiz = ({ socket, username, quizroom, exitLobbyHandler }) => {
   const [showQuizBox, setShowQuizBox] = useState(false);
   const [lobbyUsers, setLobbyUsers] = useState([]);
 
   const [isRoomFull, setIsRoomFull] = useState(false);
   const [gameID, setGameID] = useState("");
+  const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
     // Update current user on init load
@@ -22,7 +23,7 @@ const Quiz = ({ socket, username, quizroom, questions, exitLobbyHandler }) => {
     // Emit socket event to all users within specific quiz room to start game
     console.log("startGame clicked");
 
-    setShowQuizBox(true);
+    // setShowQuizBox(true);
     const start = true;
     const start_game_data = {
       start: start,
@@ -74,6 +75,9 @@ const Quiz = ({ socket, username, quizroom, questions, exitLobbyHandler }) => {
       console.log("IN START GAME USE EFFECT:", data);
       setGameID(data.gameID); // gives uuid for game
       setShowQuizBox(data.start); // true value
+      setQuestions(data.questionData); // array of objs representing questions
+      console.log("QUESTIONS FROM CLIENT", data.questionData);
+      // setShowQuizBox(true);
     });
 
     socket.on("disconnected", (updatedUsers) => {
@@ -114,15 +118,17 @@ const Quiz = ({ socket, username, quizroom, questions, exitLobbyHandler }) => {
               </button>
             </>
           )}
-          {showQuizBox && (
-            <QuizQuestions
-              socket={socket}
-              username={username}
-              quizroom={quizroom}
-              questions={questions}
-              gameID={gameID}
-            />
-          )}
+
+          {showQuizBox &&
+            !!questions.length && ( // !!questions.length check that questions is not null before rendering
+              <QuizQuestions
+                socket={socket}
+                username={username}
+                quizroom={quizroom}
+                questions={questions}
+                gameID={gameID}
+              />
+            )}
           <hr />
         </div>
       </div>

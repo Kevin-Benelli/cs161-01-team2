@@ -102,7 +102,7 @@ const Score = ({ quizroom, username, userscore, questionlength, gameID }) => {
             <ol className={styles.ol}>
               {scoreStats.map((userScore) => {
                 return (
-                  <li className={styles.li}>
+                  <li key={userScore.scoreID} className={styles.li}>
                     {userScore.username} {userScore.userscore} /{" "}
                     {userScore.questionlength}
                   </li>
