@@ -24,20 +24,8 @@ const corsCongif = {
 
 app.use(cors(corsCongif));
 
-app.use((req, res, next) => {
-  const corsWhitelist = ["http://localhost:3000"];
-  if (corsWhitelist.indexOf(req.headers.origin) !== -1) {
-    res.header("Access-Control-Allow-Origin", req.headers.origin);
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
-  }
-
-  next();
-});
-
 app.use(express.static(__dirname + "/public"));
+
 // app.get("/", cors(), async (req, res) => {
 //   res.send("Yah boi is workin");
 // });

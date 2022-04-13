@@ -21,9 +21,6 @@ const QuizQuestions = ({ socket, username, quizroom, questions, gameID }) => {
   const timerInterval = useRef();
 
   useEffect(() => {
-    console.log("YOOOO FROM QQ: ", questionData);
-  }, [questionData]);
-  useEffect(() => {
     timerInterval.current = setInterval(() => {
       setTimer((prevTime) => prevTime - 1);
     }, 1000);
