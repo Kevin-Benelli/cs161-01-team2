@@ -3,40 +3,29 @@ const mysql = require("mysql");
 const cors = require("cors");
 const app = express();
 const bcrypt = require("bcrypt");
-
+const MOMENT = require("moment");
+// app.use(express.json());
+// app.use(express.urlencoded());
 // const bodyParser = requrie("body-parser");
 // const cookieParser = require("cookie-parser");
 // const session = require("express-session");
 
 const saltRounds = 10;
 const port = 5000 || process.env.PORT;
-// app.use(express.json());
-// app.use(express.urlencoded());
 
+// { credentials: true, origin: "http://localhost:5001" }
 app.use(express.json());
-app.use(
-  cors({
-    origin: ["http://localhost:3000"],
-    methods: ["GET", "POST"],
-    credentials: true, // allows cookies to be enabled
-  })
-);
+const corsCongif = {
+  origin: ["http://localhost:3000"],
+  methods: ["GET", "POST"],
+  credentials: true, // allows cookies to be enabled
+  optionSuccessStatus: 200,
+};
 
-// app.use(cookieParser());
-// app.use(bodyParser().urlencoded({ extended: true }));
-// app.use(
-//   session({
-//     key: "userId", // name of cookie we are creating
-//     secret: "cookieSecret",
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {
-//       expires: 60 * 60 * 1,
-//     }, // cookie expiration date for when cookie expires
-//   })
-// );
+app.use(cors(corsCongif));
 
 app.use(express.static(__dirname + "/public"));
+
 // app.get("/", cors(), async (req, res) => {
 //   res.send("Yah boi is workin");
 // });
@@ -134,19 +123,20 @@ app.post("/post_login", async (req, res) => {
     }
   );
 });
-const MOMENT = require("moment");
 
 // tested
-app.post("/api/v1/post_score", async (req, res) => {
+app.post("/api/v1/post_score", cors(), async (req, res) => {
+  res.set("Access-Control-Allow-Origin", "http://localhost:3000");
+
   console.log("POST REQUEST RECEIVED: /api/v1/post_score");
   // let scoreID = 100;
-  const { quizroom, username, userscore, questionlength } = req.body;
-  console.log("Score: ", quizroom, username, userscore, questionlength);
+  const { quizroom, username, userscore, questionlength, gameID } = req.body;
+  console.log("Score: ", quizroom, username, userscore, questionlength, gameID);
   let datetime = MOMENT().format("YYYY-MM-DD  HH:mm:ss.000");
 
   db.query(
-    "INSERT INTO scores (room, username, userscore, questionlength, timestamp) VALUES (?,?,?,?,?)",
-    [quizroom, username, userscore, questionlength, datetime],
+    "INSERT INTO scores (room, username, userscore, questionlength, gameID, timestamp) VALUES (?,?,?,?,?,?)",
+    [quizroom, username, userscore, questionlength, gameID, datetime],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -164,39 +154,40 @@ app.post("/api/v1/post_score", async (req, res) => {
   );
 });
 
-//tested
-app.get("/api/v1/get_scores/:username", async (req, res) => {
-  let username = req.params["username"];
+// //tested
+// app.get("/api/v1/get_scores/:username", async (req, res) => {
+//   res.set("Access-Control-Allow-Origin", "http://localhost:3000");
+//   let username = req.params["username"];
 
-  const query = `SELECT * FROM scores WHERE username = ?`;
-  try {
-    db.query(query, username, (err, result) => {
-      if (result.length == 0) {
-        res.sendStatus(404);
-      } else {
-        console.log(result);
-        let result_accounts = [];
-        for (let i = 0; i < result.length; i++) {
-          result_accounts.push(result[i]);
-        }
-        res.json({
-          status: "success",
-          data: {
-            Account: result_accounts,
-          },
-        });
-      }
-    });
-  } catch (err) {
-    console.log(err);
-    res.sendStatus(500);
-  }
-});
+//   const query = `SELECT * FROM scores WHERE username = ?`;
+//   try {
+//     db.query(query, username, (err, result) => {
+//       if (result.length == 0) {
+//         res.sendStatus(404);
+//       } else {
+//         console.log(result);
+//         let result_accounts = [];
+//         for (let i = 0; i < result.length; i++) {
+//           result_accounts.push(result[i]);
+//         }
+//         res.json({
+//           status: "success",
+//           data: {
+//             Account: result_accounts,
+//           },
+//         });
+//       }
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     res.sendStatus(500);
+//   }
+// });
 app.get("/api/v1/get_scores/:gameID", async (req, res) => {
   const { gameID } = req.params;
   console.log("GET SCORE REQUEST: ", gameID);
   const sql =
-    "SELECT room, username, userscore, questionlength FROM Website.scores WHERE gameID = ? ORDER BY userscore DESC";
+    "SELECT scoreID, room, username, userscore, questionlength FROM Website.scores WHERE gameID = ? ORDER BY userscore DESC";
   db.query(sql, [gameID], (err, result) => {
     if (err) {
       console.log("Get Game Stats Error: ", err);
