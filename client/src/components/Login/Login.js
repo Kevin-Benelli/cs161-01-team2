@@ -5,6 +5,7 @@ import guard from "../../images/guard.jpg";
 import { Link } from "react-router-dom";
 import SocketClient from "../SocketClient";
 import Axios from "axios";
+import Button from "react-bootstrap/Button";
 
 const Login = () => {
   // used to post the username and password to the database
@@ -99,74 +100,82 @@ const Login = () => {
         <div className="center">
           <br></br>
           <br></br>
-          <img src={guard} alt="guard" className="image" />
-          <br></br>
-          <br></br>
+          <div className="card">
+            <h1 className="title">App Title</h1>
+            <img src={guard} alt="guard" className="image" />
+            <br></br>
+            <br></br>
 
-          <label>
-            <b>Username</b>
-          </label>
-          <br></br>
-          <input
-            required
-            ref={usernameRef}
-            type="text"
-            placeholder="Enter Username"
-            onChange={(event) => {
-              // setUsername(event.target.value.toUpperCase());
-              console.log(event.target.value.toUpperCase());
-            }}
-            onKeyPress={(event) => {
-              // If user types message and presses enter then send the message
-              event.key === "Enter" && postAction(event, "login");
-            }}
-          />
-          <br></br>
-          <label>
-            <b>Password</b>
-          </label>
-          <i className="bi bi-eye-slash" id="togglePassword"></i>
-          <br></br>
-          <p>
-            <input
-              required
-              ref={passwordRef}
-              type="password"
-              placeholder="Enter Password"
-              onChange={(event) => {
-                // setPassword(event.target.value.toUpperCase());
-                console.log(event.target.value.toUpperCase());
+            <label>
+              <b className="sub-header">Username</b>
+            </label>
+            <br></br>
+
+            <div>
+              <input
+                required
+                ref={usernameRef}
+                type="text"
+                placeholder="Enter Username"
+                className="login_input"
+                onChange={(event) => {
+                  // setUsername(event.target.value.toUpperCase());
+                  console.log(event.target.value.toUpperCase());
+                }}
+                onKeyPress={(event) => {
+                  // If user types message and presses enter then send the message
+                  event.key === "Enter" && postAction(event, "login");
+                }}
+              />
+              <br></br>
+              <label>
+                <b className="sub-header">Password</b>
+              </label>
+              <i className="bi bi-eye-slash" id="togglePassword"></i>
+              <br></br>
+
+              <input
+                required
+                ref={passwordRef}
+                type="password"
+                placeholder="Enter Password"
+                className="login_input"
+                onChange={(event) => {
+                  // setPassword(event.target.value.toUpperCase());
+                  console.log(event.target.value.toUpperCase());
+                }}
+                onKeyPress={(event) => {
+                  // If user types message and presses enter then send the message
+                  event.key === "Enter" && postAction(event, "login");
+                }}
+              />
+            </div>
+
+            <button
+              className="button"
+              type="login"
+              onClick={(e) => {
+                postAction(e, "login");
               }}
-              onKeyPress={(event) => {
-                // If user types message and presses enter then send the message
-                event.key === "Enter" && postAction(event, "login");
+            >
+              Login
+            </button>
+
+            <button
+              onClick={(e) => {
+                postAction(e, "create_account");
               }}
-            />
-          </p>
+              className="button"
+              type="register"
+            >
+              Register
+            </button>
 
-          <button
-            className="button"
-            type="login"
-            onClick={(e) => {
-              postAction(e, "login");
-            }}
-          >
-            Login
-          </button>
-          <button
-            onClick={(e) => {
-              postAction(e, "create_account");
-            }}
-            className="button"
-            type="register"
-          >
-            Register
-          </button>
-
-          {/* <Link to="/home" className="button">
+            {/* <Link to="/home" className="button">
             Admin Login
           </Link> */}
-          <h1> {loginResponse} </h1>
+            <h1> {loginResponse} </h1>
+          </div>
         </div>
       )}
 

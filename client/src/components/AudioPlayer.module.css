@@ -5,7 +5,7 @@
   border-radius: 10px;
   padding: 5px;
   font-size: 2vh;
-  background: rgb(71, 172, 109);
+  background: linear-gradient(to right, rgb(187, 130, 201), rgb(137, 63, 174));
   color: #fff;
   cursor: pointer;
   border: none;
