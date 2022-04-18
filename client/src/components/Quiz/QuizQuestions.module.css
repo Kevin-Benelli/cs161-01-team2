@@ -28,7 +28,7 @@
   border-radius: 10px;
   padding: 5px;
   font-size: 16px;
-  background: rgb(4, 40, 201);
+  background: linear-gradient(to right, #574c87, #291e58);
   color: #fff;
   cursor: pointer;
   border: none;

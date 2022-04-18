@@ -1,23 +1,28 @@
-input[type="text"],
-input[type="password"] {
-  width: 30%;
+body {
+  margin: 0px;
+  padding: 0px;
+  /* background: linear-gradient(to right, #ffffff, #fcf1fc); */
+}
+
+.login_input {
+  width: 90%;
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;
+  font-size: 2vh;
 }
-
 .image {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 20%;
-  height: 500%;
+  width: 22vw;
+  height: 38vh;
 }
 
 .button {
-  background-color: #291e58;
+  background: linear-gradient(to right, #574c87, #291e58);
   color: white;
   padding: 14px 20px;
   margin: 10px auto;
@@ -26,8 +31,28 @@ input[type="password"] {
   width: 500px;
   display: block;
   justify-content: center;
+  border-radius: 15px 15px;
 }
 
 .button:hover {
   opacity: 0.8;
+}
+
+.card {
+  box-shadow: 0 10vh 10vw 0 rgb(181 114 249 / 20%);
+  padding: 0vh 0vh 4vh 0vh;
+  border-left: 10px;
+  margin: 0vh 15vw 15vh 15vw;
+  border: transparent;
+}
+
+.title {
+  margin: 0vh 0vh 5vh 0vw;
+  font-size: 5vh;
+  color: rebeccapurple;
+  background: linear-gradient(to right, #d0c9ee, #beb0fa);
+}
+
+.sub-header {
+  font-size: 2vh;
 }

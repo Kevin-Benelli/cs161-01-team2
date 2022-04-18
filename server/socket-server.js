@@ -24,8 +24,15 @@ app.get("/home", cors(), async (req, res) => {
 const { Server } = require("socket.io");
 const http = require("http");
 
+const connectionOptions = {
+  "force new connection": true,
+  reconnectionAttempts: "Infinity",
+  timeout: 1,
+  transports: ["websocket"],
+};
+
 // Instantiate socket server
-const server = http.createServer(app);
+const server = http.createServer(connectionOptions, app);
 const totalUserConnectionLimit = 4;
 
 const io = new Server(server, {
