@@ -95,83 +95,84 @@ const Login = () => {
   //Creates the login page
   return (
     <React.Fragment>
-      {!isLoggedIn && (
-        // Some ghetto line breaks, need to fix it with CSS in the future
-        <div className="center">
-          <br></br>
-          <br></br>
-          <div className="card">
-            <h1 className="title">C# is C Hashtag</h1>
-            <img src={guard} alt="guard" className="image" />
-            
+      <div className="login_body">
+        {!isLoggedIn && (
+          // Some ghetto line breaks, need to fix it with CSS in the future
+          <div className="center">
             <br></br>
+            <br></br>
+            <div className="card">
+              <h1 className="title">C# is C Hashtag</h1>
+              <img src={guard} alt="guard" className="image" />
 
-            <div class = "login_content">
-              <div class ="login_header">Login or Register</div>
-              <input
-                required
-                ref={usernameRef}
-                type="text"
-                placeholder="Username"
-                className="login_input"
-                onChange={(event) => {
-                  // setUsername(event.target.value.toUpperCase());
-                  console.log(event.target.value.toUpperCase());
-                }}
-                onKeyPress={(event) => {
-                  // If user types message and presses enter then send the message
-                  event.key === "Enter" && postAction(event, "login");
-                }}
-              />
-              <br></br>
-              <i className="bi bi-eye-slash" id="togglePassword"></i>
               <br></br>
 
-              <input
-                required
-                ref={passwordRef}
-                type="password"
-                placeholder="Password"
-                className="login_input"
-                onChange={(event) => {
-                  // setPassword(event.target.value.toUpperCase());
-                  console.log(event.target.value.toUpperCase());
-                }}
-                onKeyPress={(event) => {
-                  // If user types message and presses enter then send the message
-                  event.key === "Enter" && postAction(event, "login");
-                }}
-              />
-            </div>
+              <div class="login_content">
+                <div class="login_header">Login or Register</div>
+                <input
+                  required
+                  ref={usernameRef}
+                  type="text"
+                  placeholder="Username"
+                  className="login_input"
+                  onChange={(event) => {
+                    // setUsername(event.target.value.toUpperCase());
+                    console.log(event.target.value.toUpperCase());
+                  }}
+                  onKeyPress={(event) => {
+                    // If user types message and presses enter then send the message
+                    event.key === "Enter" && postAction(event, "login");
+                  }}
+                />
+                <br></br>
+                <i className="bi bi-eye-slash" id="togglePassword"></i>
+                <br></br>
+
+                <input
+                  required
+                  ref={passwordRef}
+                  type="password"
+                  placeholder="Password"
+                  className="login_input"
+                  onChange={(event) => {
+                    // setPassword(event.target.value.toUpperCase());
+                    console.log(event.target.value.toUpperCase());
+                  }}
+                  onKeyPress={(event) => {
+                    // If user types message and presses enter then send the message
+                    event.key === "Enter" && postAction(event, "login");
+                  }}
+                />
+              </div>
               <br></br>
-            <button
-              className="button"
-              type="login"
-              onClick={(e) => {
-                postAction(e, "login");
-              }}
-            >
-              Login
-            </button>
+              <button
+                className="button"
+                type="login"
+                onClick={(e) => {
+                  postAction(e, "login");
+                }}
+              >
+                Login
+              </button>
 
-            <button
-              onClick={(e) => {
-                postAction(e, "create_account");
-              }}
-              className="button"
-              type="register"
-            >
-              Register
-            </button>
+              <button
+                onClick={(e) => {
+                  postAction(e, "create_account");
+                }}
+                className="button"
+                type="register"
+              >
+                Register
+              </button>
 
-            {/* <Link to="/home" className="button">
+              {/* <Link to="/home" className="button">
             Admin Login
           </Link> */}
-            <h1> {loginResponse} </h1>
+              <h3> {loginResponse} </h3>
+            </div>
           </div>
-        </div>
-      )}
-
+        )}
+      </div>
       {isLoggedIn && (
         <React.Fragment>
           <SocketClient onLogoutHandler={logoutHandler}> </SocketClient>

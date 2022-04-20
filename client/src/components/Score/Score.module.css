@@ -18,13 +18,13 @@
 .button {
   border-radius: 5vh;
   font-size: 5vh;
-  background-color: rgb(42, 156, 42);
+  background-color: rgb(104, 43, 161);
   padding: 2vh;
   margin: 1vw;
 }
 
 .button:active {
-  background-color: aquamarine;
+  background-color: rgb(132, 130, 229);
 }
 
 .ol {
