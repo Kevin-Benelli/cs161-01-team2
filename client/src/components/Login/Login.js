@@ -101,22 +101,18 @@ const Login = () => {
           <br></br>
           <br></br>
           <div className="card">
-            <h1 className="title">App Title</h1>
+            <h1 className="title">C# is C Hashtag</h1>
             <img src={guard} alt="guard" className="image" />
-            <br></br>
-            <br></br>
-
-            <label>
-              <b className="sub-header">Username</b>
-            </label>
+            
             <br></br>
 
-            <div>
+            <div class = "login_content">
+              <div class ="login_header">Login or Register</div>
               <input
                 required
                 ref={usernameRef}
                 type="text"
-                placeholder="Enter Username"
+                placeholder="Username"
                 className="login_input"
                 onChange={(event) => {
                   // setUsername(event.target.value.toUpperCase());
@@ -128,9 +124,6 @@ const Login = () => {
                 }}
               />
               <br></br>
-              <label>
-                <b className="sub-header">Password</b>
-              </label>
               <i className="bi bi-eye-slash" id="togglePassword"></i>
               <br></br>
 
@@ -138,7 +131,7 @@ const Login = () => {
                 required
                 ref={passwordRef}
                 type="password"
-                placeholder="Enter Password"
+                placeholder="Password"
                 className="login_input"
                 onChange={(event) => {
                   // setPassword(event.target.value.toUpperCase());
@@ -150,7 +143,7 @@ const Login = () => {
                 }}
               />
             </div>
-
+              <br></br>
             <button
               className="button"
               type="login"
