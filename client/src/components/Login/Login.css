@@ -1,4 +1,4 @@
-body {
+.login_body {
   width: 60%;
   align-content: center;
   justify-content: center;
@@ -6,7 +6,10 @@ body {
   background: #bb91e2;
   /* background: linear-gradient(to right, #ffffff, #fcf1fc); */
 }
-
+body {
+  background: #bb91e2;
+  /* background: linear-gradient(to right, #ffffff, #fcf1fc); */
+}
 .login_input {
   width: 440px;
   padding: 10px 5px;
@@ -70,7 +73,7 @@ body {
   margin: 0vh 0vh 5vh 0vw;
   font-size: 5vh;
   /* color: rebeccapurple; */
-  color:white;
+  color: white;
   /* background: linear-gradient(to right, #d0c9ee, #beb0fa); */
   background: #83559e;
 }
