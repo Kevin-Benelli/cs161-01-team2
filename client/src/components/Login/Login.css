@@ -1,34 +1,53 @@
 body {
-  margin: 0px;
-  padding: 0px;
+  width: 60%;
+  align-content: center;
+  justify-content: center;
+  margin: auto;
+  background: #bb91e2;
   /* background: linear-gradient(to right, #ffffff, #fcf1fc); */
 }
 
 .login_input {
-  width: 90%;
-  padding: 12px 20px;
-  margin: 8px 0;
+  width: 440px;
+  padding: 10px 5px;
+  margin: 0px 0;
   display: inline-block;
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   box-sizing: border-box;
   font-size: 2vh;
+  outline: none;
+  transition: border-color 0.5s;
 }
+
+.login_input:focus {
+  border-color: #574c87;
+}
+
+.login_input::placeholder {
+  color: #aaaaaa;
+}
+
 .image {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 22vw;
-  height: 38vh;
+  width: 10vw;
+  height: 22vh;
+}
+
+.login_header {
+  font-size: 30px;
+  padding: 10px;
 }
 
 .button {
   background: linear-gradient(to right, #574c87, #291e58);
   color: white;
-  padding: 14px 20px;
+  padding: 10px;
   margin: 10px auto;
   border: none;
   cursor: pointer;
-  width: 500px;
+  width: 440px;
   display: block;
   justify-content: center;
   border-radius: 15px 15px;
@@ -44,13 +63,16 @@ body {
   border-left: 10px;
   margin: 0vh 15vw 15vh 15vw;
   border: transparent;
+  background: #eeeeee;
 }
 
 .title {
   margin: 0vh 0vh 5vh 0vw;
   font-size: 5vh;
-  color: rebeccapurple;
-  background: linear-gradient(to right, #d0c9ee, #beb0fa);
+  /* color: rebeccapurple; */
+  color:white;
+  /* background: linear-gradient(to right, #d0c9ee, #beb0fa); */
+  background: #83559e;
 }
 
 .sub-header {
