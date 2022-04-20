@@ -2,13 +2,15 @@
 import React, { useState, useEffect } from "react";
 import backgroundMusic1 from "../assets/music/bensound-dreams.mp3";
 import backgroundMusic2 from "../assets/music/bensound-creativeminds.mp3";
+import backgroundMusic3 from "../assets/music/victoryz.mp3";
+
 import styles from "./AudioPlayer.module.css";
 
 const useAudio = () => {
   console.log("In useAudio");
-  let audioRecords = [backgroundMusic1, backgroundMusic2];
+  let audioRecords = [backgroundMusic1, backgroundMusic2, backgroundMusic3];
 
-  let randomMusicSelectionIndex = Math.floor(Math.random() * 2);
+  let randomMusicSelectionIndex = Math.floor(Math.random() * 3);
   console.log(
     "number: ",
     randomMusicSelectionIndex,
