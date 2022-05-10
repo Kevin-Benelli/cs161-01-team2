@@ -319,7 +319,7 @@ io.on("connection", (socket) => {
 
     const tenRandomQuestionsObj = {};
     const tenRandomQuestions = [];
-    while (Object.keys(tenRandomQuestionsObj).length < 1) {
+    while (Object.keys(tenRandomQuestionsObj).length < 10) {
       let randomQuestionIndex = Math.floor(Math.random() * questionData.length);
       tenRandomQuestionsObj[randomQuestionIndex] =
         questionData[randomQuestionIndex];
