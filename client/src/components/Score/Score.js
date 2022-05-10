@@ -9,6 +9,7 @@ const Score = ({ quizroom, username, userscore, questionlength, gameID }) => {
   const [scoreResponse, setScoreResponse] = useState("");
   const [displayGameStats, setDisplayGameStats] = useState(false);
   const [scoreStats, setScoreStats] = useState([]);
+  const [topScores, setTopScores] = useState([]);
 
   Axios.defaults.withCredentials = true;
 
@@ -92,6 +93,21 @@ const Score = ({ quizroom, username, userscore, questionlength, gameID }) => {
     backgroundColor: '#bb91e2'
   };
 
+  useEffect(() => {
+    if(scoreStats.length!=0){
+      const sortedScores = [];
+      const tempSortedScores = scoreStats;
+      console.log(tempSortedScores);
+      tempSortedScores.sort((a,b) => a.userscore > b.userscore ? -1: 1);
+      for(let i=0;i<tempSortedScores.length;i++){
+        if(sortedScores.length<3){
+          sortedScores.push(tempSortedScores[i]);
+        }
+      }
+      setTopScores(sortedScores);
+    }
+  },[scoreStats])
+
   const getLeaderboardData = () => {
     const arrayOfColors = ['red','blue', 'green', 'yellow', 'pink','orange', 'black', 'purple'];
     const data = [  [
@@ -115,8 +131,6 @@ const Score = ({ quizroom, username, userscore, questionlength, gameID }) => {
       tempArray.push(null);
       data.push(tempArray);
     }
-    console.log("Data here -->>>")
-    console.log(data)
     return data;
   }
 
@@ -141,7 +155,7 @@ const Score = ({ quizroom, username, userscore, questionlength, gameID }) => {
           <Confetti />
           <div className={styles.center_ol}>
             <ol className={styles.ol}>
-              {scoreStats.map((userScore) => {
+              {topScores.map((userScore) => {
                 return (
                   <li key={userScore.scoreID} className={styles.li}>
                     {userScore.username} {userScore.userscore} /{" "}
