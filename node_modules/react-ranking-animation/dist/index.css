@@ -1,0 +1,93 @@
+.rankings-table {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+}
+  
+.cell {
+  font-weight: bold;
+  display: flex;
+  font-size: 3.5rem;
+  align-items: center;
+  flex-grow: 1;
+  width: 100%;
+  height: 150px;
+  background-image: linear-gradient(to bottom, #c152cf, #f0ccee);
+  border: 1px solid black;
+  border-radius: 20px;
+  box-shadow: 0 1rem 1.25rem 0 rgba(0, 0, 0, 0.5),
+      0 -0.25rem 1.5rem rgb(110, 15, 155) inset,
+      0 0.75rem 0.5rem rgba(255, 255, 255, 0.4) inset,
+      0 0.25rem 0.5rem 0 rgb(180, 70, 207) inset;
+  margin: 0.25rem 0px;
+}
+
+.cell--first-place {
+  transition-property: background-image ;
+  transition-delay: 4s;
+  background-image: linear-gradient(to bottom, #ffdf01, #e9d596);
+  box-shadow: 0 1rem 1.25rem 0 rgba(0, 0, 0, 0.5),
+      0 -0.25rem 1.5rem #a88924 inset,
+      0 0.75rem 0.5rem rgba(255, 255, 255, 0.4) inset,
+      0 0.25rem 0.5rem 0 #d2ac2d inset;
+}
+
+.cell--first-place .crown {
+  display: block;
+}
+
+.cell--second-place {
+  background-image: linear-gradient(to bottom, #C0C0C0, #D3D3D3);
+  box-shadow: 0 1rem 1.25rem 0 rgba(0, 0, 0, 0.5),
+      0 -0.25rem 1.5rem #808080 inset,
+      0 0.75rem 0.5rem rgba(255, 255, 255, 0.4) inset,
+      0 0.25rem 0.5rem 0 #A9A9A9 inset;
+}
+
+.cell--second-place .silver {
+  display: block;
+}
+
+.cell--third-place {
+  background-image: linear-gradient(to bottom, #a97142, #cda27e);
+  box-shadow: 0 1rem 1.25rem 0 rgba(0, 0, 0, 0.5),
+      0 -0.25rem 1.5rem #815532 inset,
+      0 0.75rem 0.5rem rgba(255, 255, 255, 0.4) inset,
+      0 0.25rem 0.5rem 0 #a56e40 inset;
+}
+
+.cell--third-place .bronze {
+  display: block;
+}
+
+.cell__name {
+  margin: auto 50px;
+}
+
+.cell__score {
+  margin: auto 50px;
+  position: absolute;
+  right: 0;
+}
+
+@keyframes ranking-animation {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0%);
+  }
+}
+
+.ranking-animation {
+  animation: ranking-animation 1s ease-in 4s forwards;
+}
+
+.cell__medal {
+  height: 80%;
+}
+
+.crown, .silver, .bronze {
+  display: none;
+}

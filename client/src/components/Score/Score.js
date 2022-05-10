@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import styles from "./Score.module.css";
 import Axios from "axios";
 import Confetti from "react-confetti";
+import 'react-ranking-animation/dist/index.css'
+import { Chart } from "react-google-charts";
 
 const Score = ({ quizroom, username, userscore, questionlength, gameID }) => {
   const [scoreResponse, setScoreResponse] = useState("");
@@ -79,6 +81,45 @@ const Score = ({ quizroom, username, userscore, questionlength, gameID }) => {
     window.location.reload();
   };
 
+  const options = {
+    title: "Leaderboard",
+    width: 600,
+    height: 400,
+    hAxis: { title: "Questions Answered"},
+    vAxis: { title: "Users"},
+    bar: { groupWidth: "95%" },
+    legend: { position: "none" },
+    backgroundColor: '#bb91e2'
+  };
+
+  const getLeaderboardData = () => {
+    const arrayOfColors = ['red','blue', 'green', 'yellow', 'pink','orange', 'black', 'purple'];
+    const data = [  [
+      "Username",
+      "Score",
+      { role: "style" },
+      {
+        sourceColumn: 0,
+        role: "annotation",
+        type: "string",
+        calc: "stringify",
+      },
+    ]
+  ];
+
+  for(let i = 0; i < scoreStats.length; i++){
+      const tempArray = [];
+      tempArray.push(scoreStats[i].username);
+      tempArray.push(scoreStats[i].userscore);
+      tempArray.push(arrayOfColors[i]);
+      tempArray.push(null);
+      data.push(tempArray);
+    }
+    console.log("Data here -->>>")
+    console.log(data)
+    return data;
+  }
+
   return (
     <>
       {!displayGameStats ? (
@@ -108,6 +149,13 @@ const Score = ({ quizroom, username, userscore, questionlength, gameID }) => {
                   </li>
                 );
               })}
+              <Chart
+              chartType="BarChart"
+              width="100%"
+              height="400px"
+              data={getLeaderboardData()}
+              options={options}
+              />
             </ol>
           </div>
           <button className={styles.button} onClick={refreshPage}>
